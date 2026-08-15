@@ -1,0 +1,17 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R14. Path A (origin iA) has Trace+Propagation+Selectivity+Transformation but NO Delay. The Delay
+# lives on path B (origin iB). Intended: no qualifying path -> ex:candidate NOT res:Resonatus.
+ex:iA a res:Interaction . ex:iB a res:Interaction .
+ex:tA a res:TraceContinuation ; res:causallyAttributedTo ex:iA .
+ex:pA a res:PropagationEvent .
+ex:ctxA a res:ReceiverContext .
+ex:sA a res:ContextModulation ; res:uptakeDependsOn ex:ctxA .
+ex:xA a res:TransformationEvent .
+ex:pathA a res:ContinuationPath ; res:hasDeclaredOriginInteraction ex:iA ;
+  res:hasTraceContinuation ex:tA ; res:hasPropagationEvent ex:pA ;
+  res:hasContextModulation ex:sA ; res:hasTransformationEvent ex:xA .
+ex:dB a res:PostInteractionContinuation .
+ex:pathB a res:ContinuationPath ; res:hasDeclaredOriginInteraction ex:iB ; res:hasPostInteractionContinuation ex:dB .
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:pathA, ex:pathB .

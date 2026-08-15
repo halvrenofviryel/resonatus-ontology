@@ -1,0 +1,28 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:static_log a res:ResonatusCandidate ; rdfs:label "Persistent record is never causally taken up after storage" ; res:expectedClassification "NON_MEMBERSHIP_SUPPORTED" .
+ex:static_log_assessment a res:ResonatusAssessment ; res:assesses ex:static_log ;
+  res:hasCriterionAssessment ex:static_log_c1, ex:static_log_c2, ex:static_log_c3, ex:static_log_c4, ex:static_log_c5 .
+
+ex:static_log_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:static_log_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:static_log_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:FAIL .
+ex:static_log_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:FAIL .
+ex:static_log_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:FAIL .
+
+# A log can be a trace without being Resonatus.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:static_log_origin a res:Interaction .
+ex:static_log_trace a res:TraceContinuation ; res:causallyAttributedTo ex:static_log_origin .
+ex:static_log_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:static_log_origin .
+ex:static_log_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:static_log_origin ;
+  res:hasTraceContinuation ex:static_log_trace ;
+  res:hasPostInteractionContinuation ex:static_log_delay .
+ex:static_log res:hasTracePath ex:static_log_path .
+ex:static_log_assessment res:assessesPath ex:static_log_path .

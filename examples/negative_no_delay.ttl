@@ -1,0 +1,33 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:no_delay a res:ResonatusCandidate ; rdfs:label "Effect exists only during the initiating interaction" ; res:expectedClassification "NON_MEMBERSHIP_SUPPORTED" .
+ex:no_delay_assessment a res:ResonatusAssessment ; res:assesses ex:no_delay ;
+  res:hasCriterionAssessment ex:no_delay_c1, ex:no_delay_c2, ex:no_delay_c3, ex:no_delay_c4, ex:no_delay_c5 .
+
+ex:no_delay_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:no_delay_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:FAIL .
+ex:no_delay_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:no_delay_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:no_delay_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+# Counterexample isolates failure of Delay.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:no_delay_origin a res:Interaction .
+ex:no_delay_recv a res:ReceiverContext .
+ex:no_delay_trace a res:TraceContinuation ; res:causallyAttributedTo ex:no_delay_origin .
+ex:no_delay_prop a res:PropagationEvent ; res:hasPropagationReceiver ex:no_delay_recv .
+ex:no_delay_sel a res:ContextModulation ; res:uptakeDependsOn ex:no_delay_recv .
+ex:no_delay_tf a res:TransformationEvent .
+ex:no_delay_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:no_delay_origin ;
+  res:hasTraceContinuation ex:no_delay_trace ;
+  res:hasPropagationEvent ex:no_delay_prop ;
+  res:hasContextModulation ex:no_delay_sel ;
+  res:hasTransformationEvent ex:no_delay_tf .
+ex:no_delay res:hasTracePath ex:no_delay_path .
+ex:no_delay_assessment res:assessesPath ex:no_delay_path .

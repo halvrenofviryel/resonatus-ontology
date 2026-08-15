@@ -1,0 +1,9 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R9. hasTraceContinuation o causallyAttributedTo -> hasOriginInteraction, on the PATH.
+# Intended: ex:path_co res:hasOriginInteraction ex:origin is entailed.
+ex:origin a res:Interaction .
+ex:trace a res:TraceContinuation ; res:causallyAttributedTo ex:origin .
+ex:path_co a res:ContinuationPath ; res:hasTraceContinuation ex:trace .
+ex:causal_candidate a res:ResonatusCandidate ; res:hasTracePath ex:path_co .

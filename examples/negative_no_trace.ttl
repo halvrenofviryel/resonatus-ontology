@@ -1,0 +1,33 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:no_trace a res:ResonatusCandidate ; rdfs:label "Later pattern resembles the source but causal attribution is absent" ; res:expectedClassification "NON_MEMBERSHIP_SUPPORTED" .
+ex:no_trace_assessment a res:ResonatusAssessment ; res:assesses ex:no_trace ;
+  res:hasCriterionAssessment ex:no_trace_c1, ex:no_trace_c2, ex:no_trace_c3, ex:no_trace_c4, ex:no_trace_c5 .
+
+ex:no_trace_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:FAIL .
+ex:no_trace_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:no_trace_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:no_trace_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:no_trace_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+# Counterexample isolates failure of Trace.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:no_trace_origin a res:Interaction .
+ex:no_trace_recv a res:ReceiverContext .
+ex:no_trace_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:no_trace_origin .
+ex:no_trace_prop a res:PropagationEvent ; res:hasPropagationReceiver ex:no_trace_recv .
+ex:no_trace_sel a res:ContextModulation ; res:uptakeDependsOn ex:no_trace_recv .
+ex:no_trace_tf a res:TransformationEvent .
+ex:no_trace_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:no_trace_origin ;
+  res:hasPostInteractionContinuation ex:no_trace_delay ;
+  res:hasPropagationEvent ex:no_trace_prop ;
+  res:hasContextModulation ex:no_trace_sel ;
+  res:hasTransformationEvent ex:no_trace_tf .
+ex:no_trace res:hasTracePath ex:no_trace_path .
+ex:no_trace_assessment res:assessesPath ex:no_trace_path .

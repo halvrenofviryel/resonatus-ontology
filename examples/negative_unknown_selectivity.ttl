@@ -1,0 +1,33 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:unknown_selectivity a res:ResonatusCandidate ; rdfs:label "Selectivity has not been measured" ; res:expectedClassification "UNDETERMINED" .
+ex:unknown_selectivity_assessment a res:ResonatusAssessment ; res:assesses ex:unknown_selectivity ;
+  res:hasCriterionAssessment ex:unknown_selectivity_c1, ex:unknown_selectivity_c2, ex:unknown_selectivity_c3, ex:unknown_selectivity_c4, ex:unknown_selectivity_c5 .
+
+ex:unknown_selectivity_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:unknown_selectivity_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:unknown_selectivity_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:unknown_selectivity_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:NOT_MEASURED .
+ex:unknown_selectivity_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+# Missing measurement is not failure and cannot establish membership.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:unknown_selectivity_origin a res:Interaction .
+ex:unknown_selectivity_recv a res:ReceiverContext .
+ex:unknown_selectivity_trace a res:TraceContinuation ; res:causallyAttributedTo ex:unknown_selectivity_origin .
+ex:unknown_selectivity_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:unknown_selectivity_origin .
+ex:unknown_selectivity_prop a res:PropagationEvent ; res:hasPropagationReceiver ex:unknown_selectivity_recv .
+ex:unknown_selectivity_tf a res:TransformationEvent .
+ex:unknown_selectivity_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:unknown_selectivity_origin ;
+  res:hasTraceContinuation ex:unknown_selectivity_trace ;
+  res:hasPostInteractionContinuation ex:unknown_selectivity_delay ;
+  res:hasPropagationEvent ex:unknown_selectivity_prop ;
+  res:hasTransformationEvent ex:unknown_selectivity_tf .
+ex:unknown_selectivity res:hasTracePath ex:unknown_selectivity_path .
+ex:unknown_selectivity_assessment res:assessesPath ex:unknown_selectivity_path .

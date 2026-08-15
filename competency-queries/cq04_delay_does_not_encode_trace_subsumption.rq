@@ -1,0 +1,6 @@
+PREFIX res: <https://w3id.org/resonatus#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+ASK {
+  FILTER NOT EXISTS { res:PostInteractionContinuation rdfs:subClassOf+ res:TraceContinuation }
+  FILTER NOT EXISTS { res:hasPostInteractionContinuation rdfs:subPropertyOf+ res:hasTraceContinuation }
+}

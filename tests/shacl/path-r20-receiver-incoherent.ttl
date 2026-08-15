@@ -1,0 +1,13 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/coherence/> .
+ex:iA a res:Interaction .
+ex:rA a res:ReceiverContext . ex:rB a res:ReceiverContext .
+ex:t a res:TraceContinuation ; res:causallyAttributedTo ex:iA .
+ex:d a res:PostInteractionContinuation ; res:postInteractionOf ex:iA .
+ex:p a res:PropagationEvent ; res:hasPropagationReceiver ex:rA .
+ex:s a res:ContextModulation ; res:uptakeDependsOn ex:rB .
+ex:x a res:TransformationEvent .
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:iA ;
+  res:hasTraceContinuation ex:t ; res:hasPostInteractionContinuation ex:d ;
+  res:hasPropagationEvent ex:p ; res:hasContextModulation ex:s ; res:hasTransformationEvent ex:x .

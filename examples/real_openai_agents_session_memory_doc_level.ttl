@@ -1,0 +1,41 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Bounded documentation-level assessment of a real SDK mechanism.
+# It deliberately remains UNDETERMINED: the documentation establishes persistence and context carriage,
+# but a paired-state intervention has not yet established Selectivity or trace-specific Transformation.
+ex:openai_agents_session_memory a res:ResonatusCandidate ;
+  rdfs:label "OpenAI Agents SDK session-memory mechanism, documentation-level assessment"@en ;
+  res:expectedClassification "UNDETERMINED" .
+
+ex:openai_agents_session_memory_assessment a res:ResonatusAssessment ;
+  res:assesses ex:openai_agents_session_memory ;
+  res:hasCriterionAssessment
+    ex:openai_agents_session_memory_c1,
+    ex:openai_agents_session_memory_c2,
+    ex:openai_agents_session_memory_c3,
+    ex:openai_agents_session_memory_c4,
+    ex:openai_agents_session_memory_c5 .
+
+ex:openai_agents_session_memory_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:openai_agents_session_memory_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:openai_agents_session_memory_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:openai_agents_session_memory_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:NOT_MEASURED .
+ex:openai_agents_session_memory_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:INCONCLUSIVE .
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:openai_agents_session_memory_origin a res:Interaction .
+ex:openai_agents_session_memory_recv a res:ReceiverContext .
+ex:openai_agents_session_memory_trace a res:TraceContinuation ; res:causallyAttributedTo ex:openai_agents_session_memory_origin .
+ex:openai_agents_session_memory_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:openai_agents_session_memory_origin .
+ex:openai_agents_session_memory_prop a res:PropagationEvent ; res:hasPropagationReceiver ex:openai_agents_session_memory_recv .
+ex:openai_agents_session_memory_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:openai_agents_session_memory_origin ;
+  res:hasTraceContinuation ex:openai_agents_session_memory_trace ;
+  res:hasPostInteractionContinuation ex:openai_agents_session_memory_delay ;
+  res:hasPropagationEvent ex:openai_agents_session_memory_prop .
+ex:openai_agents_session_memory res:hasTracePath ex:openai_agents_session_memory_path .
+ex:openai_agents_session_memory_assessment res:assessesPath ex:openai_agents_session_memory_path .

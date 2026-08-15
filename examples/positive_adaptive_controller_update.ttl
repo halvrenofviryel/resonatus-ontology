@@ -1,0 +1,51 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:adaptive_controller_update a res:ResonatusCandidate ;
+  rdfs:label "A fault-induced controller update that later modulates a context-dependent control action" ;
+  res:expectedClassification "MEMBERSHIP_SUPPORTED" .
+
+ex:adaptive_controller_update_assessment a res:ResonatusAssessment ;
+  res:assesses ex:adaptive_controller_update ;
+  res:hasCriterionAssessment
+    ex:adaptive_controller_update_c1,
+    ex:adaptive_controller_update_c2,
+    ex:adaptive_controller_update_c3,
+    ex:adaptive_controller_update_c4,
+    ex:adaptive_controller_update_c5 .
+
+ex:adaptive_controller_update_c1 a res:CriterionAssessment ;
+  res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:adaptive_controller_update_c2 a res:CriterionAssessment ;
+  res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:adaptive_controller_update_c3 a res:CriterionAssessment ;
+  res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:adaptive_controller_update_c4 a res:CriterionAssessment ;
+  res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:adaptive_controller_update_c5 a res:CriterionAssessment ;
+  res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+# Synthetic engineering fixture only. The initiating fault modifies a retained controller state;
+# that state is later propagated into a control cycle, its downstream realization depends on
+# operating context, and the retained state is transformed into a later control action.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:adaptive_controller_update_origin a res:Interaction .
+ex:adaptive_controller_update_recv a res:ReceiverContext .
+ex:adaptive_controller_update_trace a res:TraceContinuation ; res:causallyAttributedTo ex:adaptive_controller_update_origin .
+ex:adaptive_controller_update_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:adaptive_controller_update_origin .
+ex:adaptive_controller_update_prop a res:PropagationEvent ; res:hasPropagationReceiver ex:adaptive_controller_update_recv .
+ex:adaptive_controller_update_sel a res:ContextModulation ; res:uptakeDependsOn ex:adaptive_controller_update_recv .
+ex:adaptive_controller_update_tf a res:TransformationEvent .
+ex:adaptive_controller_update_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:adaptive_controller_update_origin ;
+  res:hasTraceContinuation ex:adaptive_controller_update_trace ;
+  res:hasPostInteractionContinuation ex:adaptive_controller_update_delay ;
+  res:hasPropagationEvent ex:adaptive_controller_update_prop ;
+  res:hasContextModulation ex:adaptive_controller_update_sel ;
+  res:hasTransformationEvent ex:adaptive_controller_update_tf .
+ex:adaptive_controller_update res:hasTracePath ex:adaptive_controller_update_path .
+ex:adaptive_controller_update_assessment res:assessesPath ex:adaptive_controller_update_path .

@@ -1,0 +1,7 @@
+# Pinned tool versions for reproducible offline validation. A verifier may substitute a justified
+# equivalent (e.g. ROBOT/OWLAPI + HermiT for OWL 2 DL, Apache Jena SHACL for SHACL).
+rdflib==7.6.0
+pyshacl==0.40.1
+owlready2==0.51
+# owlready2 bundles the HermiT reasoner and requires a Java runtime (validated with OpenJDK 21).
+# BFO 2020 is vendored offline at alignments/vendor/bfo-2020-core.owl; no network is needed.

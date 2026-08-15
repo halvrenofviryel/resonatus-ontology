@@ -1,0 +1,33 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:inconclusive_causality a res:ResonatusCandidate ; rdfs:label "Causal attribution was tested but remains inconclusive" ; res:expectedClassification "UNDETERMINED" .
+ex:inconclusive_causality_assessment a res:ResonatusAssessment ; res:assesses ex:inconclusive_causality ;
+  res:hasCriterionAssessment ex:inconclusive_causality_c1, ex:inconclusive_causality_c2, ex:inconclusive_causality_c3, ex:inconclusive_causality_c4, ex:inconclusive_causality_c5 .
+
+ex:inconclusive_causality_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:INCONCLUSIVE .
+ex:inconclusive_causality_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:inconclusive_causality_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:inconclusive_causality_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:inconclusive_causality_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+# Inconclusive Trace blocks a positive membership assertion.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:inconclusive_causality_origin a res:Interaction .
+ex:inconclusive_causality_recv a res:ReceiverContext .
+ex:inconclusive_causality_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:inconclusive_causality_origin .
+ex:inconclusive_causality_prop a res:PropagationEvent ; res:hasPropagationReceiver ex:inconclusive_causality_recv .
+ex:inconclusive_causality_sel a res:ContextModulation ; res:uptakeDependsOn ex:inconclusive_causality_recv .
+ex:inconclusive_causality_tf a res:TransformationEvent .
+ex:inconclusive_causality_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:inconclusive_causality_origin ;
+  res:hasPostInteractionContinuation ex:inconclusive_causality_delay ;
+  res:hasPropagationEvent ex:inconclusive_causality_prop ;
+  res:hasContextModulation ex:inconclusive_causality_sel ;
+  res:hasTransformationEvent ex:inconclusive_causality_tf .
+ex:inconclusive_causality res:hasTracePath ex:inconclusive_causality_path .
+ex:inconclusive_causality_assessment res:assessesPath ex:inconclusive_causality_path .

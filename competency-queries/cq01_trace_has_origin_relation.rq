@@ -1,0 +1,8 @@
+PREFIX res: <https://w3id.org/resonatus#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+ASK {
+  res:TraceContinuation rdfs:subClassOf ?r .
+  ?r owl:onProperty res:causallyAttributedTo ;
+     owl:someValuesFrom res:Interaction .
+}

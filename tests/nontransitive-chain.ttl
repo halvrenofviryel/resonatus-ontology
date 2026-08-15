@@ -1,0 +1,16 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/test/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:a a res:CausalTraceProcess .
+ex:b a res:CausalTraceProcess .
+ex:c a res:CausalTraceProcess .
+
+ex:a res:directlyContinues ex:b .
+ex:b res:directlyContinues ex:c .
+
+# The release reasoner test must NOT entail:
+# ex:a res:directlyContinues ex:c .
+# The test is non-entailment, not an assertion that the triple is false under OWL's open-world semantics.
+
+[] a owl:AllDifferent ; owl:distinctMembers ( ex:a ex:b ex:c ) .

@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this artefact, please cite it using the metadata below (and the associated manuscript where applicable)."
+title: "Resonatus Ontology: OWL 2 DL Model, SHACL Validation Profile, and Verification Artefacts"
+abstract: >
+  Resonatus Ontology v1.0.0 research artefact: an OWL 2 DL model of persistent causal trace
+  processes, a SHACL validation profile, competency questions, worked examples, and reproducible
+  offline formal-verification artefacts. Split licensing applies: the ontology, documentation,
+  examples, and shapes are licensed CC BY 4.0; the executable validation code is licensed Apache-2.0.
+  See LICENSE.md for the authoritative per-path licence mapping.
+type: software
+authors:
+  - family-names: "Abak"
+    given-names: "Ali Toygar"
+    orcid: "https://orcid.org/0009-0002-3718-4010"
+version: "1.0.0"
+date-released: "2026-08-15"
+repository-code: "https://github.com/halvrenofviryel/resonatus-ontology"
+url: "https://w3id.org/resonatus"
+doi: "10.5281/zenodo.21939903"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21939903"
+    description: "Archival DOI for the Resonatus Ontology v1.0.0 research artefact (Zenodo)."
+keywords:
+  - ontology
+  - OWL 2 DL
+  - SHACL
+  - causality
+  - provenance
+  - applied ontology

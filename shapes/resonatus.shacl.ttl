@@ -1,0 +1,171 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# Graph Shape Validation Profile for Resonatus ASSESSMENT RECORDS.
+# This SHACL graph is NOT part of the OWL ontological semantics. It validates a supplied RDF data graph
+# for structural completeness/cardinality and path-scope consistency under an explicit assessment
+# convention. It does not infer ontological truth, discover causality, or turn a missing OWL entailment
+# into a falsehood. The two layers divide the work: OWL (res:ResonatusPath) enforces that all five
+# witness TYPES are present on ONE path node; this SHACL profile enforces (a) origin/receiver
+# CO-REFERENCE coherence — declared-origin = Trace-origin = Delay reference interaction, and Propagation
+# receiver = Selectivity receiver — plus completeness of those references, and (b) that an assessment
+# RECORD is well-formed and scoped to a single path. Origin/receiver co-reference is not captured by the
+# ontology's OWL 2 DL role pattern (see the coherence addendum), which is why it lives here.
+
+res:ResonatusAssessmentShape a sh:NodeShape ;
+  sh:targetClass res:ResonatusAssessment ;
+  sh:property [
+    sh:path res:assesses ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class res:ResonatusCandidate ;
+    sh:message "An assessment must reference exactly one assessed ResonatusCandidate."
+  ] ;
+  sh:property [
+    sh:path res:assessesPath ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class res:ContinuationPath ;
+    sh:message "An assessment must scope to exactly one ContinuationPath (path-coherent record)."
+  ] ;
+  sh:property [
+    sh:path res:hasCriterionAssessment ;
+    sh:minCount 5 ; sh:maxCount 5 ;
+    sh:class res:CriterionAssessment ;
+    sh:message "An assessment must carry exactly five criterion assessments."
+  ] ;
+  sh:property [
+    sh:path res:hasCriterionAssessment ;
+    sh:qualifiedValueShape [ sh:property [ sh:path res:criterion ; sh:hasValue res:TraceCriterion ] ] ;
+    sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1
+  ] ;
+  sh:property [
+    sh:path res:hasCriterionAssessment ;
+    sh:qualifiedValueShape [ sh:property [ sh:path res:criterion ; sh:hasValue res:DelayCriterion ] ] ;
+    sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1
+  ] ;
+  sh:property [
+    sh:path res:hasCriterionAssessment ;
+    sh:qualifiedValueShape [ sh:property [ sh:path res:criterion ; sh:hasValue res:PropagationCriterion ] ] ;
+    sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1
+  ] ;
+  sh:property [
+    sh:path res:hasCriterionAssessment ;
+    sh:qualifiedValueShape [ sh:property [ sh:path res:criterion ; sh:hasValue res:SelectivityCriterion ] ] ;
+    sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1
+  ] ;
+  sh:property [
+    sh:path res:hasCriterionAssessment ;
+    sh:qualifiedValueShape [ sh:property [ sh:path res:criterion ; sh:hasValue res:TransformationFeedbackCriterion ] ] ;
+    sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1
+  ] ;
+  # Path-scope consistency: no criterion assessment may declare a scope path different from the
+  # assessment's own assessesPath. (A criterion assessed against a different path breaks path coherence
+  # at the record level.)
+  sh:sparql [
+    sh:message "A criterion assessment's scopePath must match the assessment's assessesPath (single-path coherence)." ;
+    sh:select """
+      SELECT $this ?ca WHERE {
+        $this <https://w3id.org/resonatus#assessesPath> ?ap .
+        $this <https://w3id.org/resonatus#hasCriterionAssessment> ?ca .
+        ?ca <https://w3id.org/resonatus#scopePath> ?cp .
+        FILTER (?cp != ?ap)
+      }
+    """
+  ] .
+
+res:CriterionAssessmentShape a sh:NodeShape ;
+  sh:targetClass res:CriterionAssessment ;
+  sh:property [
+    sh:path res:criterion ; sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in (res:TraceCriterion res:DelayCriterion res:PropagationCriterion res:SelectivityCriterion res:TransformationFeedbackCriterion) ;
+    sh:message "Each criterion assessment names exactly one recognized criterion."
+  ] ;
+  sh:property [
+    sh:path res:verdict ; sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in (res:PASS res:FAIL res:NOT_MEASURED res:INCONCLUSIVE res:ERROR) ;
+    sh:message "Each criterion assessment carries exactly one verdict from the allowed epistemic vocabulary."
+  ] ;
+  sh:property [
+    sh:path res:scopePath ; sh:maxCount 1 ; sh:class res:ContinuationPath ;
+    sh:message "A criterion assessment scopes to at most one ContinuationPath."
+  ] .
+
+# ---------------------------------------------------------------------------
+# Path-coherence profile. Enforces the ORIGIN / RECEIVER co-reference coherence that the OWL 2 DL
+# role pattern used in this ontology cannot capture (the natural chain-plus-functionality encoding leaves
+# OWL 2 DL — its super-property becomes non-simple, which HermiT rejects). Each constraint fires only when
+# the relevant reference data is present, and reports a violation when the references DISAGREE.
+#
+# IDENTITY POLICY (intentional, deterministic): coherence is CANONICAL RDF-NODE reference equality in the
+# validation graph — SPARQL term (in)equality — NOT owl:sameAs semantic equivalence. Two references that
+# denote the same individual only via owl:sameAs are treated as DISTINCT here and fail (gates R22/R23).
+# This keeps validation independent of owl:sameAs materialization / reasoning mode. It is an
+# identifier-coherence policy, not a claim that aliased individuals are ontologically different. Run with
+# inference=none (closed-world).
+# ---------------------------------------------------------------------------
+res:PathCoherenceShape a sh:NodeShape ;
+  sh:targetClass res:ContinuationPath ;
+  # (1) declared origin == the origin the Trace is causally attributed to
+  sh:sparql [
+    sh:message "Origin incoherence: the path's declared origin differs from the interaction its Trace is causally attributed to." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?do .
+        $this <https://w3id.org/resonatus#hasTraceContinuation> ?t .
+        ?t <https://w3id.org/resonatus#causallyAttributedTo> ?to .
+        FILTER (?do != ?to)
+      }
+    """
+  ] ;
+  # (2) declared origin == the interaction the Delay (PostInteractionContinuation) is post to
+  sh:sparql [
+    sh:message "Delay incoherence: the Delay's reference interaction (postInteractionOf) differs from the path's declared origin." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?do .
+        $this <https://w3id.org/resonatus#hasPostInteractionContinuation> ?d .
+        ?d <https://w3id.org/resonatus#postInteractionOf> ?dio .
+        FILTER (?do != ?dio)
+      }
+    """
+  ] ;
+  # (3) the Selectivity modulation's uptake receiver == the Propagation's receiver
+  sh:sparql [
+    sh:message "Receiver incoherence: Selectivity depends on a different receiver than the one the Propagation reaches." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasPropagationEvent> ?p .
+        ?p <https://w3id.org/resonatus#hasPropagationReceiver> ?pr .
+        $this <https://w3id.org/resonatus#hasContextModulation> ?s .
+        ?s <https://w3id.org/resonatus#uptakeDependsOn> ?sr .
+        FILTER (?pr != ?sr)
+      }
+    """
+  ] ;
+  # (4) COMPLETENESS: a path that carries all five witness types (i.e. is shaped as a full
+  # qualification claim) MUST also carry the coherence references — a declared origin, the Trace's
+  # causal attribution, the Delay's postInteractionOf, the Propagation's receiver, and the Selectivity's
+  # uptake receiver — so that constraints (1)-(3) are actually checkable. Without this, a fully-witnessed
+  # path could omit the references and pass coherence vacuously. Fires only on all-five
+  # paths, so incomplete/adversarial paths are unaffected.
+  sh:sparql [
+    sh:message "Coherence incompleteness: a path with all five witnesses is missing a required coherence reference (declared origin, Trace causallyAttributedTo, Delay postInteractionOf, Propagation receiver, or Selectivity uptake receiver)." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasTraceContinuation> ?t .
+        $this <https://w3id.org/resonatus#hasPostInteractionContinuation> ?d .
+        $this <https://w3id.org/resonatus#hasPropagationEvent> ?p .
+        $this <https://w3id.org/resonatus#hasContextModulation> ?s .
+        { $this <https://w3id.org/resonatus#hasTransformationEvent> ?x }
+        UNION
+        { $this <https://w3id.org/resonatus#hasFeedbackEvent> ?x }
+        FILTER (
+          NOT EXISTS { $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?o } ||
+          NOT EXISTS { ?t <https://w3id.org/resonatus#causallyAttributedTo> ?o2 } ||
+          NOT EXISTS { ?d <https://w3id.org/resonatus#postInteractionOf> ?o3 } ||
+          NOT EXISTS { ?p <https://w3id.org/resonatus#hasPropagationReceiver> ?r } ||
+          NOT EXISTS { ?s <https://w3id.org/resonatus#uptakeDependsOn> ?r2 }
+        )
+      }
+    """
+  ] .

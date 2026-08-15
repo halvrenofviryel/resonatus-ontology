@@ -1,0 +1,11 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/assess/> .
+ex:path a res:ContinuationPath . ex:otherpath a res:ContinuationPath .
+ex:cand a res:ResonatusCandidate .
+ex:a a res:ResonatusAssessment ; res:assesses ex:cand ; res:assessesPath ex:path ;
+  res:hasCriterionAssessment ex:ca1, ex:ca2, ex:ca3, ex:ca4, ex:ca5 .
+ex:ca1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS ; res:scopePath ex:path .
+ex:ca2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS ; res:scopePath ex:path .
+ex:ca3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS ; res:scopePath ex:otherpath .
+ex:ca4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS ; res:scopePath ex:path .
+ex:ca5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS ; res:scopePath ex:path .

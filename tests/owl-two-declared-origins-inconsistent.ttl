@@ -1,0 +1,11 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# R16. hasDeclaredOriginInteraction is functional (at most one declared origin per path). Asserting two
+# DISTINCT declared origins on one path must make the ontology+fixture INCONSISTENT (proves constraint 3).
+ex:i1 a res:Interaction . ex:i2 a res:Interaction .
+ex:pathX a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:i1 ;
+  res:hasDeclaredOriginInteraction ex:i2 .
+[] a owl:AllDifferent ; owl:distinctMembers ( ex:i1 ex:i2 ) .

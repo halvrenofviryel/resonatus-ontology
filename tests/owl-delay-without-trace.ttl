@@ -1,0 +1,11 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R8. Path ex:path_d has only a post-interaction continuation (Delay), no Trace.
+# Intended: ex:path_d must NOT be entailed res:CausalTraceProcess, and ex:delay_candidate must NOT be
+# entailed res:Resonatus.
+ex:d_only a res:PostInteractionContinuation .
+ex:path_d a res:ContinuationPath ;
+  res:hasPostInteractionContinuation ex:d_only .
+ex:delay_candidate a res:ResonatusCandidate ;
+  res:hasTracePath ex:path_d .

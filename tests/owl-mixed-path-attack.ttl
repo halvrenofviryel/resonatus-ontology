@@ -1,0 +1,30 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R10 mixed-path false-positive attack. Two paths under one candidate; the five conditions are split
+# across them, and NO single path carries all five. Intended result: ex:candidate is NOT entailed
+# as res:Resonatus (witness coherence). This is the case earlier drafts wrongly admitted.
+ex:i1 a res:Interaction .
+ex:i2 a res:Interaction .
+
+# path p1: Trace + Delay only
+ex:t a res:TraceContinuation ; res:causallyAttributedTo ex:i1 .
+ex:d a res:PostInteractionContinuation .
+ex:p1 a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:i1 ;
+  res:hasTraceContinuation ex:t ;
+  res:hasPostInteractionContinuation ex:d .
+
+# path p2: Propagation + Selectivity + Transformation only (no Trace, no Delay)
+ex:prop a res:PropagationEvent .
+ex:ctx a res:ReceiverContext .
+ex:s a res:ContextModulation ; res:uptakeDependsOn ex:ctx .
+ex:x a res:TransformationEvent .
+ex:p2 a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:i2 ;
+  res:hasPropagationEvent ex:prop ;
+  res:hasContextModulation ex:s ;
+  res:hasTransformationEvent ex:x .
+
+ex:candidate a res:ResonatusCandidate ;
+  res:hasTracePath ex:p1 , ex:p2 .

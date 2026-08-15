@@ -1,0 +1,18 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/coherence/> .
+ex:iA a res:Interaction . ex:iB a res:Interaction .
+ex:t a res:TraceContinuation ; res:causallyAttributedTo ex:iB .
+ex:d a res:PostInteractionContinuation ; res:postInteractionOf ex:iA .
+ex:ctx a res:ReceiverContext .
+ex:p a res:PropagationEvent ; res:hasPropagationReceiver ex:ctx .
+ex:s a res:ContextModulation ; res:uptakeDependsOn ex:ctx .
+ex:x a res:TransformationEvent .
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:iA ;
+  res:hasTraceContinuation ex:t ; res:hasPostInteractionContinuation ex:d ;
+  res:hasPropagationEvent ex:p ; res:hasContextModulation ex:s ; res:hasTransformationEvent ex:x .
+# Candidate carrier so this fixture demonstrates BOTH layers of the R18 point in one place:
+#  - OWL: because the reasoner does not check origin co-reference, it STILL classifies ex:candidate as
+#    res:Resonatus (declared iA != trace-origin iB) — the documented OWL limitation.
+#  - SHACL: PathCoherenceShape reports the path NON-CONFORM (origin incoherence) — the enforcement.
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:path .

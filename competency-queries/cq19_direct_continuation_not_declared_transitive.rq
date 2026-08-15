@@ -1,0 +1,3 @@
+PREFIX res: <https://w3id.org/resonatus#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+ASK { FILTER NOT EXISTS { res:directlyContinues a owl:TransitiveProperty } }

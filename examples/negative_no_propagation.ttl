@@ -1,0 +1,33 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:no_propagation a res:ResonatusCandidate ; rdfs:label "Persistent local mark never carries influence to a downstream state" ; res:expectedClassification "NON_MEMBERSHIP_SUPPORTED" .
+ex:no_propagation_assessment a res:ResonatusAssessment ; res:assesses ex:no_propagation ;
+  res:hasCriterionAssessment ex:no_propagation_c1, ex:no_propagation_c2, ex:no_propagation_c3, ex:no_propagation_c4, ex:no_propagation_c5 .
+
+ex:no_propagation_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:no_propagation_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:no_propagation_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:FAIL .
+ex:no_propagation_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:no_propagation_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+# Counterexample isolates failure of Propagation.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:no_propagation_origin a res:Interaction .
+ex:no_propagation_recv a res:ReceiverContext .
+ex:no_propagation_trace a res:TraceContinuation ; res:causallyAttributedTo ex:no_propagation_origin .
+ex:no_propagation_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:no_propagation_origin .
+ex:no_propagation_sel a res:ContextModulation ; res:uptakeDependsOn ex:no_propagation_recv .
+ex:no_propagation_tf a res:TransformationEvent .
+ex:no_propagation_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:no_propagation_origin ;
+  res:hasTraceContinuation ex:no_propagation_trace ;
+  res:hasPostInteractionContinuation ex:no_propagation_delay ;
+  res:hasContextModulation ex:no_propagation_sel ;
+  res:hasTransformationEvent ex:no_propagation_tf .
+ex:no_propagation res:hasTracePath ex:no_propagation_path .
+ex:no_propagation_assessment res:assessesPath ex:no_propagation_path .

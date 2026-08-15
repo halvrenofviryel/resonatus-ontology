@@ -1,0 +1,10 @@
+PREFIX res: <https://w3id.org/resonatus#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+# Layering: the causal-trace-process specialization now lives on the qualifying PATH
+# (res:ResonatusPath ⊑ res:CausalTraceProcess), while res:Resonatus specializes the candidate and
+# depends on the existence of such a path. (Earlier drafts had Resonatus directly ⊑ CausalTraceProcess; the
+# reified-path design moved that specialization to the path — see DESIGN_RATIONALE.md.)
+ASK {
+  res:ResonatusPath rdfs:subClassOf res:CausalTraceProcess .
+  res:Resonatus     rdfs:subClassOf res:ResonatusCandidate .
+}

@@ -1,0 +1,23 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# R13. Two independent complete paths. Intended: ex:candidate IS res:Resonatus, and the reasoner must
+# NOT merge the two paths or the two origins (no owl:sameAs). Individuals asserted distinct to expose merges.
+ex:iA a res:Interaction . ex:iB a res:Interaction .
+ex:tA a res:TraceContinuation ; res:causallyAttributedTo ex:iA .
+ex:tB a res:TraceContinuation ; res:causallyAttributedTo ex:iB .
+ex:dA a res:PostInteractionContinuation . ex:dB a res:PostInteractionContinuation .
+ex:pA a res:PropagationEvent . ex:pB a res:PropagationEvent .
+ex:ctxA a res:ReceiverContext . ex:ctxB a res:ReceiverContext .
+ex:sA a res:ContextModulation ; res:uptakeDependsOn ex:ctxA .
+ex:sB a res:ContextModulation ; res:uptakeDependsOn ex:ctxB .
+ex:xA a res:TransformationEvent . ex:xB a res:TransformationEvent .
+ex:pathA a res:ContinuationPath ; res:hasDeclaredOriginInteraction ex:iA ;
+  res:hasTraceContinuation ex:tA ; res:hasPostInteractionContinuation ex:dA ;
+  res:hasPropagationEvent ex:pA ; res:hasContextModulation ex:sA ; res:hasTransformationEvent ex:xA .
+ex:pathB a res:ContinuationPath ; res:hasDeclaredOriginInteraction ex:iB ;
+  res:hasTraceContinuation ex:tB ; res:hasPostInteractionContinuation ex:dB ;
+  res:hasPropagationEvent ex:pB ; res:hasContextModulation ex:sB ; res:hasTransformationEvent ex:xB .
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:pathA, ex:pathB .
+[] a owl:AllDifferent ; owl:distinctMembers ( ex:pathA ex:pathB ex:iA ex:iB ) .

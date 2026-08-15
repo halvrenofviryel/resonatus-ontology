@@ -1,0 +1,18 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R11. Each of the five conditions sits on a DIFFERENT path. No single path qualifies.
+# Intended: ex:candidate NOT entailed res:Resonatus.
+ex:i a res:Interaction .
+ex:t a res:TraceContinuation ; res:causallyAttributedTo ex:i .
+ex:d a res:PostInteractionContinuation .
+ex:p a res:PropagationEvent .
+ex:ctx a res:ReceiverContext .
+ex:s a res:ContextModulation ; res:uptakeDependsOn ex:ctx .
+ex:x a res:TransformationEvent .
+ex:pa a res:ContinuationPath ; res:hasDeclaredOriginInteraction ex:i ; res:hasTraceContinuation ex:t .
+ex:pb a res:ContinuationPath ; res:hasPostInteractionContinuation ex:d .
+ex:pc a res:ContinuationPath ; res:hasPropagationEvent ex:p .
+ex:pd a res:ContinuationPath ; res:hasContextModulation ex:s .
+ex:pe a res:ContinuationPath ; res:hasTransformationEvent ex:x .
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:pa, ex:pb, ex:pc, ex:pd, ex:pe .

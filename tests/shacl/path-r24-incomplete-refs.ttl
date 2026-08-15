@@ -1,0 +1,15 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/coherence/> .
+# R24 completeness: all FIVE witnesses present, but the Delay lacks postInteractionOf (a required
+# coherence reference). A fully-witnessed path must carry the coherence refs -> NON-CONFORM.
+ex:iA a res:Interaction .
+ex:rA a res:ReceiverContext .
+ex:t a res:TraceContinuation ; res:causallyAttributedTo ex:iA .
+ex:d a res:PostInteractionContinuation .        # <-- missing res:postInteractionOf
+ex:p a res:PropagationEvent ; res:hasPropagationReceiver ex:rA .
+ex:s a res:ContextModulation ; res:uptakeDependsOn ex:rA .
+ex:x a res:TransformationEvent .
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:iA ;
+  res:hasTraceContinuation ex:t ; res:hasPostInteractionContinuation ex:d ;
+  res:hasPropagationEvent ex:p ; res:hasContextModulation ex:s ; res:hasTransformationEvent ex:x .

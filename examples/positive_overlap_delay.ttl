@@ -1,0 +1,36 @@
+# Temporal-overlap fixture: conceptual case in which the trace begins before the originating interaction ends but retains a non-zero continuation afterward.
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:agent_memory_recall a res:ResonatusCandidate ; rdfs:label "Agent memory that later changes a different decision" ; res:expectedClassification "MEMBERSHIP_SUPPORTED" .
+ex:agent_memory_recall_assessment a res:ResonatusAssessment ; res:assesses ex:agent_memory_recall ;
+  res:hasCriterionAssessment ex:agent_memory_recall_c1, ex:agent_memory_recall_c2, ex:agent_memory_recall_c3, ex:agent_memory_recall_c4, ex:agent_memory_recall_c5 .
+
+ex:agent_memory_recall_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:agent_memory_recall_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:agent_memory_recall_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:agent_memory_recall_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:agent_memory_recall_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+# A stored trace is later presented in a new decision context, changes downstream behavior, and is transformed or fed back into subsequent state.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:agent_memory_recall_origin a res:Interaction .
+ex:agent_memory_recall_recv a res:ReceiverContext .
+ex:agent_memory_recall_trace a res:TraceContinuation ; res:causallyAttributedTo ex:agent_memory_recall_origin .
+ex:agent_memory_recall_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:agent_memory_recall_origin .
+ex:agent_memory_recall_prop a res:PropagationEvent ; res:hasPropagationReceiver ex:agent_memory_recall_recv .
+ex:agent_memory_recall_sel a res:ContextModulation ; res:uptakeDependsOn ex:agent_memory_recall_recv .
+ex:agent_memory_recall_tf a res:TransformationEvent .
+ex:agent_memory_recall_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:agent_memory_recall_origin ;
+  res:hasTraceContinuation ex:agent_memory_recall_trace ;
+  res:hasPostInteractionContinuation ex:agent_memory_recall_delay ;
+  res:hasPropagationEvent ex:agent_memory_recall_prop ;
+  res:hasContextModulation ex:agent_memory_recall_sel ;
+  res:hasTransformationEvent ex:agent_memory_recall_tf .
+ex:agent_memory_recall res:hasTracePath ex:agent_memory_recall_path .
+ex:agent_memory_recall_assessment res:assessesPath ex:agent_memory_recall_path .

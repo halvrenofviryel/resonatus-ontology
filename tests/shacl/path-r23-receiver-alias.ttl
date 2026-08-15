@@ -1,0 +1,15 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/coherence/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+ex:iA a res:Interaction .
+ex:rA a res:ReceiverContext . ex:rAlias a res:ReceiverContext .
+ex:rAlias owl:sameAs ex:rA .
+ex:t a res:TraceContinuation ; res:causallyAttributedTo ex:iA .
+ex:d a res:PostInteractionContinuation ; res:postInteractionOf ex:iA .
+ex:p a res:PropagationEvent ; res:hasPropagationReceiver ex:rA .
+ex:s a res:ContextModulation ; res:uptakeDependsOn ex:rAlias .
+ex:x a res:TransformationEvent .
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:iA ;
+  res:hasTraceContinuation ex:t ; res:hasPostInteractionContinuation ex:d ;
+  res:hasPropagationEvent ex:p ; res:hasContextModulation ex:s ; res:hasTransformationEvent ex:x .

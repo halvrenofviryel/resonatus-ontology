@@ -1,0 +1,6 @@
+PREFIX res: <https://w3id.org/resonatus#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+ASK {
+  res:ResonatusCandidate rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> .
+  res:Interaction rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> .
+}

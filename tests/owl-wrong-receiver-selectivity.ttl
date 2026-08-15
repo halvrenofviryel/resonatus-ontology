@@ -1,0 +1,17 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R15. Path A (origin iA) has Trace+Delay+Propagation+Transformation but NO ContextModulation; the
+# ContextModulation lives on path B. Intended: no qualifying path -> ex:candidate NOT res:Resonatus.
+ex:iA a res:Interaction . ex:iB a res:Interaction .
+ex:tA a res:TraceContinuation ; res:causallyAttributedTo ex:iA .
+ex:dA a res:PostInteractionContinuation .
+ex:pA a res:PropagationEvent .
+ex:xA a res:TransformationEvent .
+ex:pathA a res:ContinuationPath ; res:hasDeclaredOriginInteraction ex:iA ;
+  res:hasTraceContinuation ex:tA ; res:hasPostInteractionContinuation ex:dA ;
+  res:hasPropagationEvent ex:pA ; res:hasTransformationEvent ex:xA .
+ex:ctxB a res:ReceiverContext .
+ex:sB a res:ContextModulation ; res:uptakeDependsOn ex:ctxB .
+ex:pathB a res:ContinuationPath ; res:hasDeclaredOriginInteraction ex:iB ; res:hasContextModulation ex:sB .
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:pathA, ex:pathB .

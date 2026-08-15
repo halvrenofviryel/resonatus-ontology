@@ -1,0 +1,20 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R12. ex:full is a complete qualifying path; ex:partial is incomplete. Intended: ex:candidate IS
+# entailed res:Resonatus, because at least one qualifying path exists.
+ex:i a res:Interaction .
+ex:t a res:TraceContinuation ; res:causallyAttributedTo ex:i .
+ex:d a res:PostInteractionContinuation .
+ex:p a res:PropagationEvent .
+ex:ctx a res:ReceiverContext .
+ex:s a res:ContextModulation ; res:uptakeDependsOn ex:ctx .
+ex:x a res:TransformationEvent .
+ex:full a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:i ;
+  res:hasTraceContinuation ex:t ; res:hasPostInteractionContinuation ex:d ;
+  res:hasPropagationEvent ex:p ; res:hasContextModulation ex:s ; res:hasTransformationEvent ex:x .
+ex:i2 a res:Interaction .
+ex:t2 a res:TraceContinuation ; res:causallyAttributedTo ex:i2 .
+ex:partial a res:ContinuationPath ; res:hasDeclaredOriginInteraction ex:i2 ; res:hasTraceContinuation ex:t2 .
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:full, ex:partial .

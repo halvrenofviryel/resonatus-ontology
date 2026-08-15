@@ -1,0 +1,10 @@
+PREFIX res: <https://w3id.org/resonatus#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+# Selectivity (tightened): a ContextModulation commits to uptake that materially DEPENDS
+# ON a receiver context (res:uptakeDependsOn), not mere co-presence of a receiver context.
+ASK {
+  res:ContextModulation rdfs:subClassOf ?r .
+  ?r owl:onProperty res:uptakeDependsOn ;
+     owl:someValuesFrom res:ReceiverContext .
+}

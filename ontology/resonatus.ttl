@@ -1,0 +1,233 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix odrl: <http://www.w3.org/ns/odrl/2/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+
+<https://w3id.org/resonatus> a owl:Ontology ;
+  rdfs:label "Resonatus ontology"@en ;
+  rdfs:comment "A structural ontology for persistent causal trace processes. OWL axioms define the semantic layer; assessment graph validation is specified separately in SHACL. The five constitutive condition TYPES are witnessed on ONE reified path node (res:ContinuationPath / res:ResonatusPath; OWL-enforced), not on the candidate as separable existentials. Origin/receiver reference coherence across those witnesses is enforced at the SHACL layer, not in OWL (see DESIGN_RATIONALE.md)."@en ;
+  dcterms:creator "Ali Toygar Abak" ;
+  dcterms:created "2026-08-14"^^xsd:date ;
+  dcterms:modified "2026-08-15"^^xsd:date ;
+  dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:identifier "https://doi.org/10.5281/zenodo.21939903" ;
+  dcterms:hasVersion "1.0.0" ;
+  dcterms:isReferencedBy <https://doi.org/10.5281/zenodo.21939903> ;
+  rdfs:seeAlso <https://github.com/halvrenofviryel/resonatus-ontology> ;
+  vann:preferredNamespacePrefix "res" ;
+  vann:preferredNamespaceUri "https://w3id.org/resonatus#" ;
+  owl:versionIRI <https://w3id.org/resonatus/1.0.0> ;
+  owl:versionInfo "1.0.0" .
+
+### ---------------------------------------------------------------------------
+### Core classes
+### ---------------------------------------------------------------------------
+
+res:Interaction a owl:Class ;
+  rdfs:subClassOf prov:Activity ;
+  rdfs:label "Interaction"@en .
+
+res:ResonatusCandidate a owl:Class ;
+  rdfs:subClassOf prov:Activity ;
+  rdfs:label "Resonatus candidate"@en ;
+  rdfs:comment "A process selected for assessment against the five Resonatus criteria. Candidate status carries no entailment that Trace, Delay, Propagation, Selectivity, or Transformation/Feedback is satisfied. A candidate may declare one or more causal paths (res:hasTracePath); membership depends on the existence of at least one QUALIFYING path (res:ResonatusPath)."@en .
+
+### The reified ontic causal path. This is an ontic, temporally extended causal process used to
+### delimit ONE coherent continuation from ONE declared originating interaction. It is NOT an assessment,
+### evidence bundle, receipt, or provenance artefact (see disjointness with res:ResonatusAssessment).
+res:ContinuationPath a owl:Class ;
+  rdfs:subClassOf prov:Activity ;
+  rdfs:label "Continuation path"@en ;
+  rdfs:comment "An ontic, temporally extended continuation path used to delimit one coherent continuation from one declared originating interaction. This genus is deliberately Trace-NEUTRAL: causal status is NOT presupposed here — a path becomes a causal trace process only once the Trace criterion is established (res:CausalTraceProcess). It bears the criterion witnesses (Trace, Delay, Propagation, Selectivity, Transformation/Feedback) so that qualification is judged on a single coherent path rather than on witnesses aggregated from different lineages. NOTE: path-level coherence (all five on one path) is enforced in OWL; same-origin / same-receiver coherence across those witnesses is not captured by the OWL 2 DL role pattern used here (the natural chain-plus-functionality encoding leaves OWL 2 DL via the simple-role restriction) and is enforced in the SHACL path-coherence profile. BFO placement (bfo:process) is asserted only in the optional bridge and is reasoner-checked; the core does not commit to a 'process aggregate' category."@en .
+
+res:TraceContinuation a owl:Class ;
+  rdfs:label "Trace continuation"@en ;
+  rdfs:comment "A later state, difference, representation, disposition, or process portion asserted to be causally attributable to at least one interaction. The causal-attribution relation is explicit in the OWL model; evidential adequacy for that assertion remains external to OWL."@en ;
+  rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty res:causallyAttributedTo ;
+    owl:someValuesFrom res:Interaction
+  ] .
+
+res:PostInteractionContinuation a owl:Class ;
+  rdfs:label "Post-interaction continuation"@en ;
+  rdfs:comment "A candidate continuation with a non-zero temporal portion strictly after the end boundary of the originating interaction. It may begin before, at, or after that boundary. This class is intentionally NOT a subclass of TraceContinuation: Delay is temporal persistence and must not entail causal Trace."@en .
+
+res:PropagationEvent a owl:Class ; rdfs:subClassOf prov:Activity ; rdfs:label "Propagation event"@en .
+
+### Selectivity: a ContextModulation asserts that downstream uptake materially
+### DEPENDS ON a receiver/context (res:uptakeDependsOn), not merely that a receiver context exists. The
+### class records the ontological dependence commitment; evidence for that dependence is assessed separately.
+res:ContextModulation a owl:Class ;
+  rdfs:label "Context modulation"@en ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty res:uptakeDependsOn ; owl:someValuesFrom res:ReceiverContext ] ;
+  rdfs:comment "A downstream modulation whose uptake materially depends on a receiver or receiving-process context (res:uptakeDependsOn). Mere co-presence of a receiver context (res:hasReceiverContext) does not by itself establish Selectivity; the dependence commitment is what the class records, and its evidence is assessment-layer."@en .
+
+res:TransformationEvent a owl:Class ; rdfs:subClassOf prov:Activity ; rdfs:label "Transformation event"@en .
+res:FeedbackEvent a owl:Class ; rdfs:subClassOf prov:Activity ; rdfs:label "Feedback event"@en .
+res:ReceiverContext a owl:Class ; rdfs:label "Receiver context"@en .
+res:Evidence a owl:Class ; rdfs:subClassOf prov:Entity ; rdfs:label "Evidence"@en .
+
+### ---------------------------------------------------------------------------
+### Object properties (criterion witnesses now attach to the PATH, not the candidate)
+### ---------------------------------------------------------------------------
+
+res:hasTracePath a owl:ObjectProperty ;
+  rdfs:domain res:ResonatusCandidate ; rdfs:range res:ContinuationPath ;
+  rdfs:label "has trace path"@en ;
+  rdfs:comment "Links a candidate to a continuation path it declares (res:ContinuationPath is deliberately Trace-neutral). The link does not assert the path is qualifying; qualification is the classification res:ResonatusPath. (Realizes the intended 'has a qualifying trace path' when the filler is a ResonatusPath.)"@en .
+
+res:hasDeclaredOriginInteraction a owl:ObjectProperty, owl:FunctionalProperty ;
+  rdfs:domain res:ContinuationPath ; rdfs:range res:Interaction ;
+  rdfs:label "has declared origin interaction"@en ;
+  rdfs:comment "The single declared originating interaction that scopes a causal path's membership claim R(path, i). Declared FunctionalProperty: at most one declared origin per path (with the 'some Interaction' condition in ResonatusPath giving 'exactly one'). This scopes the assessment; it does not assert the process has only one cause in reality."@en .
+
+res:causallyAttributedTo a owl:ObjectProperty ;
+  rdfs:domain res:TraceContinuation ; rdfs:range res:Interaction ;
+  rdfs:label "causally attributed to"@en ;
+  rdfs:comment "Ontological causal-attribution assertion linking a TraceContinuation to an originating Interaction. The property represents the asserted relation; it does not define a domain-independent method for proving causation."@en .
+
+res:hasOriginInteraction a owl:ObjectProperty ;
+  rdfs:domain res:ContinuationPath ; rdfs:range res:Interaction ;
+  rdfs:subPropertyOf prov:wasInfluencedBy ;
+  owl:propertyChainAxiom ( res:hasTraceContinuation res:causallyAttributedTo ) ;
+  rdfs:label "has origin interaction"@en ;
+  rdfs:comment "Convenience/provenance relation derived from a path's TraceContinuation and that continuation's explicit causal attribution. Distinct from res:hasDeclaredOriginInteraction, which is the single declared scope; hasOriginInteraction is derived and may be multi-valued."@en .
+
+res:hasTraceContinuation a owl:ObjectProperty ; rdfs:domain res:ContinuationPath ; rdfs:range res:TraceContinuation .
+res:hasPostInteractionContinuation a owl:ObjectProperty ;
+  rdfs:domain res:ContinuationPath ; rdfs:range res:PostInteractionContinuation ;
+  rdfs:comment "Represents the Delay position independently of causal-attribution assertions. It is intentionally not a subproperty of hasTraceContinuation."@en .
+res:hasPropagationEvent a owl:ObjectProperty ; rdfs:domain res:ContinuationPath ; rdfs:range res:PropagationEvent .
+res:hasContextModulation a owl:ObjectProperty ; rdfs:domain res:ContinuationPath ; rdfs:range res:ContextModulation .
+res:hasTransformationEvent a owl:ObjectProperty ; rdfs:domain res:ContinuationPath ; rdfs:range res:TransformationEvent .
+res:hasFeedbackEvent a owl:ObjectProperty ; rdfs:domain res:ContinuationPath ; rdfs:range res:FeedbackEvent .
+
+res:hasReceiverContext a owl:ObjectProperty ; rdfs:domain res:ContextModulation ; rdfs:range res:ReceiverContext ;
+  rdfs:comment "Plain reference to a receiver context. Co-presence alone is not Selectivity (see res:uptakeDependsOn)."@en .
+res:uptakeDependsOn a owl:ObjectProperty ; rdfs:domain res:ContextModulation ; rdfs:range res:ReceiverContext ;
+  rdfs:label "uptake depends on"@en ;
+  rdfs:comment "Asserts that the downstream uptake of the modulation materially depends on the receiver/context. This is the tightened Selectivity commitment; evidential adequacy is assessment-layer."@en .
+
+### Reference relations that make ORIGIN/RECEIVER coherence expressible in the data. The OWL 2 DL role
+### pattern used here cannot force these to co-refer with the path's declared origin / propagation
+### receiver: the natural chain-plus-functionality encoding leaves OWL 2 DL (its super-property becomes
+### non-simple, which HermiT rejects). This is a scoped statement about the pattern in use, not a claim
+### that no OWL 2 DL encoding could relate such witnesses. Same-origin / same-receiver coherence is
+### therefore enforced in the SHACL path-coherence profile, not by the reasoner.
+res:postInteractionOf a owl:ObjectProperty ; rdfs:domain res:PostInteractionContinuation ; rdfs:range res:Interaction ;
+  rdfs:label "post-interaction of"@en ;
+  rdfs:comment "The interaction whose end boundary a PostInteractionContinuation (Delay) is temporally after. For a coherent Resonatus path this must be the path's declared originating interaction; that equality is a SHACL path-coherence constraint, not an OWL entailment."@en .
+res:hasPropagationReceiver a owl:ObjectProperty ; rdfs:domain res:PropagationEvent ; rdfs:range res:ReceiverContext ;
+  rdfs:label "has propagation receiver"@en ;
+  rdfs:comment "The receiver context a PropagationEvent reaches. For a coherent path, the Selectivity modulation's uptake must depend on this same receiver; that equality is a SHACL path-coherence constraint, not an OWL entailment."@en .
+
+res:supportedBy a owl:ObjectProperty ; rdfs:range res:Evidence .
+res:hasTemporalExtent a owl:ObjectProperty ;
+  rdfs:range time:TemporalEntity ;
+  rdfs:label "has temporal extent"@en ;
+  rdfs:comment "Links a modeled process, interaction, or continuation to an OWL-Time temporal entity. Temporal ordering supports Delay assessment but is not causal proof."@en .
+
+res:directlyContinues a owl:ObjectProperty, owl:AsymmetricProperty, owl:IrreflexiveProperty ;
+  rdfs:domain res:CausalTraceProcess ;
+  rdfs:range res:CausalTraceProcess ;
+  rdfs:label "directly continues"@en ;
+  rdfs:comment "Direct process-to-process continuation between causal trace processes (paths). Deliberately not declared transitive; a chain A→B→C does not by itself entail A→C and never entails identity or merger of A, B, and C."@en .
+
+### ---------------------------------------------------------------------------
+### Derived path classes
+### ---------------------------------------------------------------------------
+
+### A causal path that carries a Trace commitment. Path-level: the Trace witness is on the path.
+res:CausalTraceProcess a owl:Class ;
+  rdfs:subClassOf res:ContinuationPath ;
+  rdfs:label "Causal trace process"@en ;
+  rdfs:comment "A causal path for which an originating interaction and a causal Trace continuation are represented. Captures the Trace commitment without presupposing the remaining Resonatus criteria."@en ;
+  owl:equivalentClass [
+    a owl:Class ;
+    owl:intersectionOf (
+      res:ContinuationPath
+      [ a owl:Restriction ; owl:onProperty res:hasTraceContinuation ; owl:someValuesFrom res:TraceContinuation ]
+    )
+  ] .
+
+### The QUALIFYING path: one coherent path bearing all five constitutive conditions and exactly one
+### declared origin. This is where witness coherence is enforced (all five on the SAME path node).
+res:ResonatusPath a owl:Class ;
+  rdfs:subClassOf res:CausalTraceProcess ;
+  rdfs:label "Resonatus path"@en ;
+  rdfs:comment "An ontic causal path that qualifies against all five Resonatus conditions on a single coherent path scoped to exactly one declared originating interaction. Its existence under a candidate is what constitutes Resonatus membership."@en ;
+  owl:equivalentClass [
+    a owl:Class ;
+    owl:intersectionOf (
+      res:CausalTraceProcess
+      [ a owl:Restriction ; owl:onProperty res:hasDeclaredOriginInteraction ; owl:someValuesFrom res:Interaction ]
+      [ a owl:Restriction ; owl:onProperty res:hasPostInteractionContinuation ; owl:someValuesFrom res:PostInteractionContinuation ]
+      [ a owl:Restriction ; owl:onProperty res:hasPropagationEvent ; owl:someValuesFrom res:PropagationEvent ]
+      [ a owl:Restriction ; owl:onProperty res:hasContextModulation ; owl:someValuesFrom res:ContextModulation ]
+      [ a owl:Class ; owl:unionOf (
+          [ a owl:Restriction ; owl:onProperty res:hasTransformationEvent ; owl:someValuesFrom res:TransformationEvent ]
+          [ a owl:Restriction ; owl:onProperty res:hasFeedbackEvent ; owl:someValuesFrom res:FeedbackEvent ]
+        )
+      ]
+    )
+  ] .
+
+### ---------------------------------------------------------------------------
+### Ontic class definition of Resonatus (candidate with at least one qualifying path).
+### This axiom represents the constitutive definition; it does not establish empirical truth.
+### ---------------------------------------------------------------------------
+res:Resonatus a owl:Class ;
+  rdfs:subClassOf res:ResonatusCandidate ;
+  rdfs:label "Resonatus"@en ;
+  rdfs:comment "A candidate process that declares at least one qualifying causal path (res:ResonatusPath) — i.e. one coherent path on which Trace, Delay, Propagation, Selectivity, and Transformation-or-Feedback all hold, scoped to one declared originating interaction. Membership follows the existential-over-paths reading: at least one qualifying path suffices."@en ;
+  owl:equivalentClass [
+    a owl:Class ;
+    owl:intersectionOf (
+      res:ResonatusCandidate
+      [ a owl:Restriction ; owl:onProperty res:hasTracePath ; owl:someValuesFrom res:ResonatusPath ]
+    )
+  ] .
+
+### Ontic path is not an epistemic assessment artefact (the path is ontic; assessment is a separate layer).
+[] a owl:AllDisjointClasses ;
+  owl:members ( res:ContinuationPath res:ResonatusAssessment ) .
+
+### ---------------------------------------------------------------------------
+### Epistemic assessment layer: a claim about membership is distinct from membership itself.
+### ---------------------------------------------------------------------------
+res:ResonatusAssessment a owl:Class ; rdfs:label "Resonatus assessment"@en .
+res:CriterionAssessment a owl:Class ; rdfs:label "Criterion assessment"@en .
+res:Criterion a owl:Class .
+res:Verdict a owl:Class .
+res:AssessmentMethod a owl:Class ; rdfs:label "Assessment method"@en .
+
+res:TraceCriterion a res:Criterion ; rdfs:label "Trace"@en .
+res:DelayCriterion a res:Criterion ; rdfs:label "Delay"@en .
+res:PropagationCriterion a res:Criterion ; rdfs:label "Propagation"@en .
+res:SelectivityCriterion a res:Criterion ; rdfs:label "Selectivity"@en .
+res:TransformationFeedbackCriterion a res:Criterion ; rdfs:label "Transformation or Feedback"@en .
+
+res:PASS a res:Verdict .
+res:FAIL a res:Verdict .
+res:NOT_MEASURED a res:Verdict .
+res:INCONCLUSIVE a res:Verdict .
+res:ERROR a res:Verdict .
+
+res:assesses a owl:ObjectProperty ; rdfs:domain res:ResonatusAssessment ; rdfs:range res:ResonatusCandidate .
+res:assessesPath a owl:ObjectProperty ; rdfs:domain res:ResonatusAssessment ; rdfs:range res:ContinuationPath ;
+  rdfs:comment "The specific causal path an assessment scopes its criterion verdicts to. The SHACL validation profile requires exactly one per assessment (path-coherent assessment records); OWL itself leaves cardinality open."@en .
+res:hasCriterionAssessment a owl:ObjectProperty ; rdfs:domain res:ResonatusAssessment ; rdfs:range res:CriterionAssessment .
+res:scopePath a owl:ObjectProperty ; rdfs:domain res:CriterionAssessment ; rdfs:range res:ContinuationPath ;
+  rdfs:comment "Optional: the causal path a criterion assessment is scoped to. Used by the assessment-record validation profile to keep all criterion verdicts on one path."@en .
+res:criterion a owl:ObjectProperty ; rdfs:domain res:CriterionAssessment ; rdfs:range res:Criterion .
+res:verdict a owl:ObjectProperty ; rdfs:domain res:CriterionAssessment ; rdfs:range res:Verdict .
+res:evidence a owl:ObjectProperty ; rdfs:domain res:CriterionAssessment ; rdfs:range res:Evidence .
+res:usesAssessmentMethod a owl:ObjectProperty ; rdfs:domain res:CriterionAssessment ; rdfs:range res:AssessmentMethod .
+res:expectedClassification a owl:DatatypeProperty ; rdfs:range xsd:string .

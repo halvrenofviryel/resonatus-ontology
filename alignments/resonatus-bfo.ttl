@@ -1,0 +1,17 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://w3id.org/resonatus/alignment/bfo> a owl:Ontology ;
+  rdfs:label "Resonatus–BFO 2020 bridge"@en ;
+  rdfs:comment "Optional upper-ontology bridge. Imports the official BFO 2020 core. This module does not make BFO a dependency of the Resonatus CORE ontology (the core is loadable without it). For OFFLINE reproducibility a pinned copy is vendored at alignments/vendor/bfo-2020-core.owl (BFO 2020, versionIRI http://purl.obolibrary.org/obo/bfo/2020/bfo.owl, sha256 9a22d4668110a9b87c97bbcff28fb8dd6aa398fdbf869004f53e71694908deee, retrieved 2026-08-14); resolve the import IRI to that file in offline runs. R2 (core+bridge+BFO consistent) verified locally against this pinned copy."@en ;
+  owl:imports <http://purl.obolibrary.org/obo/bfo/2020/bfo.owl> ;
+  owl:versionInfo "1.0.0" .
+
+# BFO_0000015 = process in BFO 2020.
+res:ResonatusCandidate rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> .
+res:Interaction rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> .
+# the reified ontic causal path is a process (plain bfo:process; deliberately NOT committed to a
+# special 'process aggregate' category — to be reasoner- and ontological-analysis-checked per the
+# dedicated ontological analysis (kept as plain bfo:process meanwhile).
+res:ContinuationPath rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> .

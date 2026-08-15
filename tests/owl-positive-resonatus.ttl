@@ -1,0 +1,23 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# Intended OWL 2 DL result: ex:candidate is entailed as res:Resonatus, because ex:path is a
+# single coherent res:ResonatusPath carrying all five conditions and one declared origin.
+ex:i a res:Interaction .
+ex:t a res:TraceContinuation ; res:causallyAttributedTo ex:i .
+ex:d a res:PostInteractionContinuation .
+ex:p a res:PropagationEvent .
+ex:ctx a res:ReceiverContext .
+ex:s a res:ContextModulation ; res:uptakeDependsOn ex:ctx .
+ex:x a res:TransformationEvent .
+
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:i ;
+  res:hasTraceContinuation ex:t ;
+  res:hasPostInteractionContinuation ex:d ;
+  res:hasPropagationEvent ex:p ;
+  res:hasContextModulation ex:s ;
+  res:hasTransformationEvent ex:x .
+
+ex:candidate a res:ResonatusCandidate ;
+  res:hasTracePath ex:path .

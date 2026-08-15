@@ -1,0 +1,21 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R7. Path ex:path_ms carries Trace+Delay+Propagation+Transformation but NO ContextModulation.
+# Intended: ex:path_ms is a res:CausalTraceProcess (has trace) but NOT a res:ResonatusPath, and
+# ex:candidate_no_selectivity is NOT entailed res:Resonatus. OWA non-entailment, not a negative assertion.
+ex:i2 a res:Interaction .
+ex:t2 a res:TraceContinuation ; res:causallyAttributedTo ex:i2 .
+ex:d2 a res:PostInteractionContinuation .
+ex:p2 a res:PropagationEvent .
+ex:x2 a res:TransformationEvent .
+
+ex:path_ms a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:i2 ;
+  res:hasTraceContinuation ex:t2 ;
+  res:hasPostInteractionContinuation ex:d2 ;
+  res:hasPropagationEvent ex:p2 ;
+  res:hasTransformationEvent ex:x2 .
+
+ex:candidate_no_selectivity a res:ResonatusCandidate ;
+  res:hasTracePath ex:path_ms .

@@ -1,0 +1,33 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:no_selectivity a res:ResonatusCandidate ; rdfs:label "Delayed propagated trace produces the same response across admissible receiver contexts" ; res:expectedClassification "NON_MEMBERSHIP_SUPPORTED" .
+ex:no_selectivity_assessment a res:ResonatusAssessment ; res:assesses ex:no_selectivity ;
+  res:hasCriterionAssessment ex:no_selectivity_c1, ex:no_selectivity_c2, ex:no_selectivity_c3, ex:no_selectivity_c4, ex:no_selectivity_c5 .
+
+ex:no_selectivity_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:no_selectivity_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:no_selectivity_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:no_selectivity_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:FAIL .
+ex:no_selectivity_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+# Counterexample isolates failure of Selectivity.
+
+# --- ontic path: witness present iff its criterion verdict is PASS;
+# canonical origin/receiver coherence. OWL entails Resonatus iff all five present (all PASS).
+@prefix exp: <https://example.org/resonatus/case/> .
+ex:no_selectivity_origin a res:Interaction .
+ex:no_selectivity_recv a res:ReceiverContext .
+ex:no_selectivity_trace a res:TraceContinuation ; res:causallyAttributedTo ex:no_selectivity_origin .
+ex:no_selectivity_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:no_selectivity_origin .
+ex:no_selectivity_prop a res:PropagationEvent ; res:hasPropagationReceiver ex:no_selectivity_recv .
+ex:no_selectivity_tf a res:TransformationEvent .
+ex:no_selectivity_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:no_selectivity_origin ;
+  res:hasTraceContinuation ex:no_selectivity_trace ;
+  res:hasPostInteractionContinuation ex:no_selectivity_delay ;
+  res:hasPropagationEvent ex:no_selectivity_prop ;
+  res:hasTransformationEvent ex:no_selectivity_tf .
+ex:no_selectivity res:hasTracePath ex:no_selectivity_path .
+ex:no_selectivity_assessment res:assessesPath ex:no_selectivity_path .

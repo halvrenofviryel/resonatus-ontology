@@ -1,0 +1,8 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+
+# R17. Using res:hasPropagationEvent on an otherwise-untyped individual. Domain axiom types ex:stray as
+# res:ContinuationPath (intended: witnesses belong to paths). It must NOT be typed res:ResonatusCandidate or
+# res:Resonatus from this alone (candidate typing requires res:hasTracePath).
+ex:pe a res:PropagationEvent .
+ex:stray res:hasPropagationEvent ex:pe .
