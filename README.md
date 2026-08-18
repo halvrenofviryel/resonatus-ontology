@@ -1,8 +1,9 @@
 # Resonatus Ontology v1.0.0
 
 A structural ontology for **persistent causal trace processes**, with a SHACL validation profile,
-competency questions, worked examples, and reproducible formal‑verification artefacts. Companion
-research artefact for the manuscript *Resonatus: An Ontology of Persistent Causal Trace Processes*.
+competency questions, worked examples, and reproducible formal‑verification artefacts. A **persistent causal trace ontology** in OWL 2 DL. Companion
+research artefact for the manuscript *Resonatus: An Ontology of Persistent Causal Trace Processes*
+(Ali Toygar Abak, Phionyx Research).
 
 | | |
 |---|---|
