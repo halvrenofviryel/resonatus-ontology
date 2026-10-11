@@ -21,7 +21,7 @@ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/3e2821a6f96
 The remote bytes matched the reviewed RC with SHA-256
 `7fab06c5dc40a7e3c1431d0b88c992630c5d7eb9e0e3d8ef44a930a31862a599`.
 
-## Recommended permanent identifier contract
+## Approved permanent identifier contract
 
 The owner approved these identifiers for final v1.1.0 artefact preparation:
 
@@ -39,24 +39,36 @@ final identifiers above in `profiles/v1.1/`; redirect rules must target an immut
 commit containing those final artefacts. Whether the RC identifiers also receive archival redirects
 is a separate owner choice; they must not silently become final IRIs.
 
+## Verified immutable final targets
+
+Final v1.1.0 artefacts were preserved in commit
+`65918870c8cafcf64ef7d8dbace14571178829dd`. On 2026-10-11, the GitHub Raw responses were
+byte-for-byte equal to the local files:
+
+| Target | SHA-256 |
+|---|---|
+| `profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl` | `cb704ff5c6a2376033bbb0908c387a8db18fa0025da32c5d7c87a2671dff7f0c` |
+| `profiles/v1.1/profile-activation.ttl` | `1b3b2578337bf109b69933edf9608b5057aa11599da7e92b3d70d3c6f06cbf57` |
+| `profiles/v1.1/schemas/validation-result.schema.json` | `584a3cbcf99911393c47a4db4d8892b2d8c5527f5ba17d54fe842e543ca99a93` |
+
 ## Proposed w3id rule shape
 
-The following is a review template, not an `.htaccess` change. Replace both placeholders only after the
-final target exists and is byte-verified over HTTPS:
+The following is a review-ready template, not an `.htaccess` change. It uses the verified immutable
+commit above:
 
 ```apache
 # Strict-profile versioned vocabulary -> immutable approved release content
-RewriteRule ^strict/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/<APPROVED_RELEASE_COMMIT>/profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl [R=302,L]
+RewriteRule ^strict/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl [R=302,L]
 
 # Versioned profile activation identifiers -> immutable approved release content
-RewriteRule ^strict/profile/strict-linear/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/<APPROVED_RELEASE_COMMIT>/profiles/v1.1/profile-activation.ttl [R=302,L]
-RewriteRule ^strict/profile/strict-assessment/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/<APPROVED_RELEASE_COMMIT>/profiles/v1.1/profile-activation.ttl [R=302,L]
+RewriteRule ^strict/profile/strict-linear/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/profile-activation.ttl [R=302,L]
+RewriteRule ^strict/profile/strict-assessment/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/profile-activation.ttl [R=302,L]
 
 # Versioned machine-readable result schema
-RewriteRule ^strict/schema/validation-result/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/<APPROVED_RELEASE_COMMIT>/profiles/v1.1/schemas/validation-result.schema.json [R=302,L]
+RewriteRule ^strict/schema/validation-result/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/schemas/validation-result.schema.json [R=302,L]
 
 # Canonical strict ontology IRI -> currently approved strict vocabulary
-RewriteRule ^strict/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/<APPROVED_RELEASE_COMMIT>/profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl [R=302,L]
+RewriteRule ^strict/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl [R=302,L]
 ```
 
 These rules are intended to be inserted before the existing root rule because `^$` must continue to
@@ -65,11 +77,12 @@ resolve the v1.0.0 core. They do not replace or edit either current v1.0.0 rule.
 ## Publication sequence
 
 1. Owner approval of the permanent identifiers and normative profile contract — **complete**.
-2. Promote the approved RC to final `1.1.0` artefacts and identifiers in a dedicated commit.
-3. Rerun package, portability, and repository regression gates; regenerate checksums.
-4. Push the immutable target and verify every raw HTTPS target.
+2. Promote the approved RC to final `1.1.0` artefacts and identifiers in a dedicated commit — **complete**.
+3. Rerun package, portability, and repository regression gates; regenerate checksums — **complete**.
+4. Push the immutable target and verify every raw HTTPS target — **complete**.
 5. After separate authorization, prepare a minimal `perma-id/w3id.org` pull request touching only
    `ids/resonatus/.htaccess`.
 6. Run the w3id repository checks and manually test every redirect after merge.
 
-No w3id fork, branch, commit, or pull request was created during RC preparation.
+No w3id fork, branch, commit, or pull request has been created. Steps 5–6 remain blocked on separate
+authorization.

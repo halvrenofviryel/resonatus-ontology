@@ -30,9 +30,9 @@ The experimental fixtures are migrated in memory, with `exp:causallyPrecedes` de
 `strict:hasCausalNextStage`, so the established oracles are tested against the owner-selected
 approved contract rather than copied expected output.
 
-The full run parsed the complete repository Turtle inventory, matched all 13 repository fixture
-classifications, and passed the
-repository reasoner, SHACL, cross-layer, competency-query, structure-audit, and wording gates.
+The full run parsed all 105 Turtle files, matched all 13 repository fixture classifications, and
+passed the repository reasoner, SHACL, cross-layer, competency-query, structure-audit, and wording
+gates.
 
 ## Formal coverage
 
@@ -61,7 +61,8 @@ require.
 
 | Item | Status | Effect |
 |---|---|---|
-| Permanent `w3id.org` namespace resolution | `UNRESOLVED` — ontology IRI returned HTTP 404 on 2026-10-11 | IRI contract is owner-approved; application awaits immutable targets and a separately authorized w3id PR |
+| Permanent `w3id.org` namespace resolution | `UNRESOLVED` — ontology IRI returned HTTP 404 on 2026-10-11 | IRI contract and targets are ready; application awaits a separately authorized w3id PR |
+| Immutable raw HTTPS targets | `PASS` — three target files in commit `65918870c8cafcf64ef7d8dbace14571178829dd` matched local bytes | Redirect plan is pinned without changing w3id state |
 | Cross-engine SHACL temporal comparison | `PASS` — 8/8 agreement on pySHACL 0.40.1/RDFLib 7.6.0 and Apache Jena SHACL 6.2.0 | Blocker closed for the recorded versions and matrix; rerun on engine or shape changes |
 | Branch/merge identity semantics | `OUT_OF_SCOPE` | Strict Linear cannot be claimed for those cases |
 | Information-object upper-ontology alignment | `DEFERRED` | PROV-only model retained |
@@ -71,7 +72,6 @@ require.
 ## Publication blockers
 
 - operational resolution and content-negotiation checks for the approved public IRIs;
-- byte-verification of the immutable raw HTTPS targets used by the redirect plan;
 - an explicit release action separate from this local preparation task.
 
 A preservation commit and branch push exist as recorded in the owner decision register. No merge,
