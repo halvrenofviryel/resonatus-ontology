@@ -1,0 +1,12 @@
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Record presence only; this shape does not assess scientific evidence adequacy.
+strict:CausalClaimEvidenceRecordShape a sh:NodeShape ;
+  sh:targetClass strict:CausalAttributionClaim ;
+  sh:targetSubjectsOf strict:causalSubject ;
+  sh:property [ sh:path res:supportedBy ; sh:minCount 1 ;
+    sh:message "MISSING_EVIDENCE_RECORD: a causal claim needs a cited evidence record." ] ;
+  sh:property [ sh:path res:supportedBy ; sh:class res:Evidence ;
+    sh:message "VIOLATION_EVIDENCE_RECORD_TYPE: supportedBy values must be Evidence." ] .

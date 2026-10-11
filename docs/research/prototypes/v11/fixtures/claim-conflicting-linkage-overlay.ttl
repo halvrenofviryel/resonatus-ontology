@@ -1,0 +1,14 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+
+# The record is structurally complete, but its object differs from both the explicit ontic target and
+# the path's declared origin. Claim-record conformance must remain independent from this conflict.
+ex:claim a exp:CausalAttributionClaim ;
+  exp:causalSubject ex:trace ;
+  exp:causalObject ex:otherOrigin ;
+  res:supportedBy ex:causalEvidence ;
+  exp:usesCausalAssessmentMethod ex:causalMethod .
+ex:otherOrigin a res:Interaction .
+ex:causalEvidence a res:Evidence .
+ex:causalMethod a res:AssessmentMethod .

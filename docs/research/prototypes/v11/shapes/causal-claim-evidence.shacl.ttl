@@ -1,0 +1,19 @@
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Experimental evidence-record presence policy. This shape checks only whether the claim cites a
+# typed evidence record. It does not assess domain evidence quality, causal truth, or scientific
+# adequacy; those remain explicitly unassessed.
+
+exp:CausalClaimEvidenceRecordShape a sh:NodeShape ;
+  sh:targetClass exp:CausalAttributionClaim ;
+  sh:targetSubjectsOf exp:causalSubject ;
+  sh:property [
+    sh:path res:supportedBy ; sh:minCount 1 ;
+    sh:message "MISSING_EVIDENCE_RECORD: a causal claim needs a cited evidence record."
+  ] ;
+  sh:property [
+    sh:path res:supportedBy ; sh:class res:Evidence ;
+    sh:message "VIOLATION_EVIDENCE_RECORD_TYPE: supportedBy values must be Evidence."
+  ] .

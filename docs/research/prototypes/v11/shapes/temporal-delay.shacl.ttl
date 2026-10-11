@@ -1,0 +1,118 @@
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Experimental optional Delay profile. A continuation may overlap its origin, but its interval must be
+# non-zero and must end strictly after the origin interaction's end. Property-based targeting prevents
+# a missing rdf:type triple from producing a vacuous pass.
+
+exp:TemporalDelayShape a sh:NodeShape ;
+  sh:targetClass res:PostInteractionContinuation ;
+  sh:targetObjectsOf res:hasPostInteractionContinuation ;
+  sh:property [
+    sh:path res:postInteractionOf ; sh:minCount 1 ;
+    sh:message "MISSING_TEMPORAL_DATA: the Delay witness needs an origin reference."
+  ] ;
+  sh:property [
+    sh:path res:postInteractionOf ; sh:maxCount 1 ; sh:class res:Interaction ;
+    sh:message "VIOLATION_TEMPORAL_ORIGIN: the Delay witness must reference exactly one Interaction."
+  ] ;
+  sh:property [
+    sh:path exp:temporallyQualifiesPath ; sh:minCount 1 ;
+    sh:message "MISSING_TEMPORAL_LINEAGE_LINK: the Delay witness must identify the ContinuationPath it temporally qualifies."
+  ] ;
+  sh:property [
+    sh:path exp:temporallyQualifiesPath ; sh:maxCount 1 ;
+    sh:message "VIOLATION_TEMPORAL_LINEAGE_CARDINALITY: the Delay witness must qualify exactly one ContinuationPath."
+  ] ;
+  sh:property [
+    sh:path exp:temporallyQualifiesPath ; sh:class res:ContinuationPath ;
+    sh:message "VIOLATION_TEMPORAL_LINEAGE_TYPE: the temporal qualification target must be a ContinuationPath."
+  ] ;
+  sh:property [
+    sh:path res:hasTemporalExtent ; sh:minCount 1 ;
+    sh:message "MISSING_TEMPORAL_DATA: the Delay witness needs an interval."
+  ] ;
+  sh:property [
+    sh:path res:hasTemporalExtent ; sh:maxCount 1 ; sh:class time:ProperInterval ;
+    sh:message "VIOLATION_TEMPORAL_INTERVAL: the Delay witness must have exactly one ProperInterval."
+  ] ;
+  sh:property [
+    sh:path (res:hasTemporalExtent time:hasBeginning time:inXSDDateTimeStamp) ;
+    sh:minCount 1 ;
+    sh:message "MISSING_TEMPORAL_DATA: the Delay interval needs a beginning timestamp."
+  ] ;
+  sh:property [
+    sh:path (res:hasTemporalExtent time:hasBeginning time:inXSDDateTimeStamp) ;
+    sh:maxCount 1 ; sh:datatype xsd:dateTimeStamp ;
+    sh:pattern "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$" ;
+    sh:message "VIOLATION_TEMPORAL_TIMESTAMP: the Delay beginning must be one canonical UTC xsd:dateTimeStamp."
+  ] ;
+  sh:property [
+    sh:path (res:hasTemporalExtent time:hasEnd time:inXSDDateTimeStamp) ;
+    sh:minCount 1 ;
+    sh:message "MISSING_TEMPORAL_DATA: the Delay interval needs an end timestamp."
+  ] ;
+  sh:property [
+    sh:path (res:hasTemporalExtent time:hasEnd time:inXSDDateTimeStamp) ;
+    sh:maxCount 1 ; sh:datatype xsd:dateTimeStamp ;
+    sh:pattern "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$" ;
+    sh:message "VIOLATION_TEMPORAL_TIMESTAMP: the Delay end must be one canonical UTC xsd:dateTimeStamp."
+  ] ;
+  sh:property [
+    sh:path (
+      res:postInteractionOf res:hasTemporalExtent time:hasEnd time:inXSDDateTimeStamp
+    ) ;
+    sh:minCount 1 ;
+    sh:message "MISSING_TEMPORAL_DATA: the origin needs an interval end timestamp."
+  ] ;
+  sh:property [
+    sh:path (
+      res:postInteractionOf res:hasTemporalExtent time:hasEnd time:inXSDDateTimeStamp
+    ) ;
+    sh:maxCount 1 ; sh:datatype xsd:dateTimeStamp ;
+    sh:pattern "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$" ;
+    sh:message "VIOLATION_TEMPORAL_TIMESTAMP: the origin end must be one canonical UTC xsd:dateTimeStamp."
+  ] ;
+  sh:sparql [
+    sh:message "MISSING_TEMPORAL_LINEAGE_LINK: the Delay witness must temporally qualify the path that carries it." ;
+    sh:select """
+      SELECT $this WHERE {
+        ?path <https://w3id.org/resonatus#hasPostInteractionContinuation> $this .
+        FILTER NOT EXISTS {
+          $this <https://w3id.org/resonatus/experimental/v1.1#temporallyQualifiesPath> ?path .
+        }
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_TEMPORAL_LINEAGE_MISMATCH: the Delay witness explicitly qualifies a different ContinuationPath from the path that carries it." ;
+    sh:select """
+      SELECT $this WHERE {
+        ?path <https://w3id.org/resonatus#hasPostInteractionContinuation> $this .
+        $this <https://w3id.org/resonatus/experimental/v1.1#temporallyQualifiesPath> ?otherPath .
+        FILTER (?otherPath != ?path)
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_TEMPORAL_ORDER: continuation duration must be non-zero and its end must be strictly after the origin end." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#postInteractionOf> ?origin ;
+              <https://w3id.org/resonatus#hasTemporalExtent> ?di .
+        ?di <http://www.w3.org/2006/time#hasBeginning> ?dbi ;
+            <http://www.w3.org/2006/time#hasEnd> ?dei .
+        ?dbi <http://www.w3.org/2006/time#inXSDDateTimeStamp> ?delayBegin .
+        ?dei <http://www.w3.org/2006/time#inXSDDateTimeStamp> ?delayEnd .
+        ?origin <https://w3id.org/resonatus#hasTemporalExtent> ?oi .
+        ?oi <http://www.w3.org/2006/time#hasEnd> ?oei .
+        ?oei <http://www.w3.org/2006/time#inXSDDateTimeStamp> ?originEnd .
+        # The property constraints restrict timestamps to a fixed-width UTC lexical form. Under that
+        # operational normalization, lexical and chronological order coincide.
+        FILTER (STR(?delayEnd) <= STR(?delayBegin) || STR(?delayEnd) <= STR(?originEnd))
+      }
+    """
+  ] .

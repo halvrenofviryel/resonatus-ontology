@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+- Isolated the negative assessment SHACL fixtures so missing `assessesPath` no longer lets unrelated
+  tests pass for the wrong reason. The SHACL runner now asserts expected report components, paths, and
+  identifying SPARQL messages, not only `conforms = false`.
+- Added R26 to verify `sh:targetClass` discovery through `rdfs:subClassOf` in the data graph while the
+  runner remains on `inference="none"`.
+- Replaced the cross-layer runner's Boolean OWL result with `ENTAILED`, `NOT_ENTAILED`, `INCONSISTENT`,
+  and `EXECUTION_ERROR`; inconsistent input is now a hard failure rather than negative membership.
+  The runner also recomputes the epistemic classification from criterion verdicts instead of trusting
+  the declared expected label alone.
+- Added two deliberate ontic/epistemic disagreement fixtures to verify layer independence. The 13
+  existing examples remain aligned regression fixtures, not evidence of a general equivalence.
+- Clarified diagram notation, witness mixing, causal-attribution semantics, and executable competency
+  coverage (`7/22`; `7/7` only among the queries that exist).
+
 ## 1.0.0 — 2026-08-15 (first public release)
 - First public, archival release of the Resonatus ontology research artefact.
 - Persistent identifiers fixed: ontology IRI `https://w3id.org/resonatus`, namespace

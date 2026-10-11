@@ -1,0 +1,24 @@
+{
+  "candidateVersion": "1.1.0-rc.1",
+  "profile": "STRICT_ASSESSMENT",
+  "owlOutcome": "OWL_ENTAILED",
+  "applicability": "IN_SCOPE",
+  "dimensions": {
+    "structural": "CONFORMING",
+    "temporal": "CONFORMING",
+    "assessmentScope": "CONFORMING",
+    "claimRecord": "CONFORMING",
+    "onticLinkage": "INSUFFICIENT_DATA",
+    "evidenceRecord": "CONFORMING"
+  },
+  "causalCommitment": "EXISTENTIAL_COMMITMENT_ONLY",
+  "scientificEvidenceStatus": "DOMAIN_EVIDENCE_UNASSESSED",
+  "findings": [
+    {
+      "dimension": "onticLinkage",
+      "code": "MISSING_ONTIC_LINKAGE",
+      "message": "The structurally valid claim has no matching explicit ontic causal attribution.",
+      "focusNode": "https://example.org/resonatus/prototype/claim"
+    }
+  ]
+}

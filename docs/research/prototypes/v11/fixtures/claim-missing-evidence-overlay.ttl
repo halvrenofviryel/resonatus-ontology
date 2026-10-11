@@ -1,0 +1,11 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+
+# The claim matches the explicitly asserted ontic relation in b-valid-process-path.ttl and names a
+# method, but it has no evidence record. Evidence status must be INSUFFICIENT_DATA.
+ex:claim a exp:CausalAttributionClaim ;
+  exp:causalSubject ex:trace ;
+  exp:causalObject ex:origin ;
+  exp:usesCausalAssessmentMethod ex:causalMethod .
+ex:causalMethod a res:AssessmentMethod .

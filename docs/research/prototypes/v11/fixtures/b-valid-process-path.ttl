@@ -1,0 +1,43 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:path .
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:origin ;
+  res:hasTraceContinuation ex:trace ;
+  res:hasPostInteractionContinuation ex:delay ;
+  res:hasPropagationEvent ex:propagation ;
+  res:hasContextModulation ex:selectivity ;
+  res:hasTransformationEvent ex:transformation ;
+  exp:hasCausalSegment ex:trace, ex:propagation, ex:selectivity, ex:transformation .
+
+ex:origin a res:Interaction ;
+  res:hasTemporalExtent ex:originInterval ;
+  exp:causallyPrecedes ex:trace .
+ex:trace a res:TraceContinuation ;
+  res:causallyAttributedTo ex:origin ;
+  exp:causallyPrecedes ex:propagation .
+ex:delay a res:PostInteractionContinuation ;
+  res:postInteractionOf ex:origin ;
+  exp:temporallyQualifiesPath ex:path ;
+  res:hasTemporalExtent ex:delayInterval .
+ex:propagation a res:PropagationEvent ;
+  res:hasPropagationReceiver ex:receiver ;
+  exp:causallyPrecedes ex:selectivity .
+ex:selectivity a res:ContextModulation ;
+  res:uptakeDependsOn ex:receiver ;
+  exp:causallyPrecedes ex:transformation .
+ex:transformation a res:TransformationEvent .
+ex:receiver a res:ReceiverContext .
+
+ex:originInterval a time:ProperInterval ;
+  time:hasBeginning ex:originBegin ; time:hasEnd ex:originEnd .
+ex:originBegin a time:Instant ; time:inXSDDateTimeStamp "2026-01-01T10:00:00Z"^^xsd:dateTimeStamp .
+ex:originEnd a time:Instant ; time:inXSDDateTimeStamp "2026-01-01T11:00:00Z"^^xsd:dateTimeStamp .
+ex:delayInterval a time:ProperInterval ;
+  time:hasBeginning ex:delayBegin ; time:hasEnd ex:delayEnd .
+ex:delayBegin a time:Instant ; time:inXSDDateTimeStamp "2026-01-01T10:30:00Z"^^xsd:dateTimeStamp .
+ex:delayEnd a time:Instant ; time:inXSDDateTimeStamp "2026-01-01T12:00:00Z"^^xsd:dateTimeStamp .

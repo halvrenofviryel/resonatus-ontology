@@ -1,0 +1,6 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+
+# Add to b-valid-process-path.ttl. The Delay then names both its carrying path and another path,
+# exposing explicit path mismatch and cardinality violations.
+ex:delay strict:temporallyQualifiesPath ex:unrelatedPath .

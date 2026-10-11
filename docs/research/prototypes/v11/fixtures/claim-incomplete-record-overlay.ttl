@@ -1,0 +1,11 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+
+# The relata match the ontic assertion and an evidence record is cited, but the claim-record method is
+# absent. Only claim-record conformance should therefore be insufficient.
+ex:claim a exp:CausalAttributionClaim ;
+  exp:causalSubject ex:trace ;
+  exp:causalObject ex:origin ;
+  res:supportedBy ex:causalEvidence .
+ex:causalEvidence a res:Evidence .

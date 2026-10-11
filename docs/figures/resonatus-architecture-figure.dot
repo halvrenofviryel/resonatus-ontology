@@ -1,0 +1,96 @@
+digraph ResonatusArchitecture {
+  graph [
+    bgcolor="white",
+    fontname="Helvetica",
+    fontsize=11,
+    nodesep=0.42,
+    pad=0.18,
+    rankdir=TB,
+    ranksep=0.58,
+    splines=polyline
+  ];
+  node [fontname="Helvetica", fontsize=10, shape=box, style="rounded"];
+  edge [fontname="Helvetica", fontsize=9, color="#222222"];
+
+  subgraph cluster_owl {
+    label="OWL 2 DL semantic layer";
+    color="#333333";
+    style="rounded";
+
+    candidate [label="ResonatusCandidate"];
+    continuation [label="ContinuationPath\ntrace-neutral"];
+    causal [label="CausalTraceProcess\n+ Trace witness"];
+    rpath [label="ResonatusPath\n+ Delay\n+ Propagation\n+ Selectivity\n+ (Transformation OR Feedback)\n+ one declared origin"];
+    resonatus [label="Resonatus", penwidth=1.4];
+    definition [
+      label="Resonatus ≡ ResonatusCandidate ⊓\n(∃ hasTracePath.ResonatusPath)\nclass expression, not an RDF edge",
+      shape=note,
+      style="filled",
+      fillcolor="#F6F6F6"
+    ];
+
+    candidate -> continuation [
+      label="hasTracePath\nobject property",
+      color="#174A7E",
+      fontcolor="#174A7E"
+    ];
+    causal -> continuation [label="rdfs:subClassOf", arrowhead=empty];
+    rpath -> causal [label="rdfs:subClassOf", arrowhead=empty];
+    resonatus -> candidate [label="rdfs:subClassOf", arrowhead=empty];
+    resonatus -> definition [label="defined by", arrowhead=none, style=dotted];
+  }
+
+  subgraph cluster_validation {
+    label="SHACL graph validation and epistemic assessment";
+    color="#555555";
+    style="rounded,dashed";
+
+    assessment [label="ResonatusAssessment"];
+    criteria [label="5 CriterionAssessment nodes\nPASS / FAIL / NOT_MEASURED /\nINCONCLUSIVE / ERROR"];
+    coherence [
+      label="PathCoherenceShape\ncanonical RDF-node equality\nDeclared origin = Trace origin = Delay origin\nPropagation receiver = Selectivity receiver"
+    ];
+    policy [
+      label="Reporting policy\nMEMBERSHIP_SUPPORTED /\nNON_MEMBERSHIP_SUPPORTED / UNDETERMINED"
+    ];
+
+    assessment -> criteria [
+      label="hasCriterionAssessment\nobject property",
+      color="#174A7E",
+      fontcolor="#174A7E"
+    ];
+    criteria -> policy [label="explicit verdicts"];
+  }
+
+  assessment -> continuation [
+    label="assessesPath\nobject property",
+    color="#174A7E",
+    fontcolor="#174A7E",
+    constraint=false
+  ];
+  coherence -> continuation [
+    label="validates supplied path graph",
+    arrowhead=none,
+    style=dashed,
+    constraint=false
+  ];
+  policy -> resonatus [
+    label="does not create OWL truth",
+    arrowhead=none,
+    style=dotted,
+    constraint=false
+  ];
+
+  legend [
+    shape=plain,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD ALIGN="LEFT"><B>Notation</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#174A7E">blue labelled arrow</FONT> = named RDF/OWL object property</TD></TR>
+        <TR><TD ALIGN="LEFT">open triangle arrow = rdfs:subClassOf, pointing to the superclass</TD></TR>
+        <TR><TD ALIGN="LEFT">dashed line = SHACL validation relation, not an OWL entailment</TD></TR>
+        <TR><TD ALIGN="LEFT">dotted line = explanatory non-entailment or definitional link</TD></TR>
+      </TABLE>
+    >
+  ];
+}

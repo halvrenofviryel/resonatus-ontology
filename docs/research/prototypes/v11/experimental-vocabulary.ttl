@@ -1,0 +1,61 @@
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+<https://w3id.org/resonatus/experimental/v1.1> a owl:Ontology ;
+  rdfs:label "Resonatus v1.1 experimental prototype vocabulary"@en ;
+  rdfs:comment "Non-normative research vocabulary. It is not imported by the Resonatus core and does not change the published v1.0.0 semantics."@en .
+
+exp:AssessmentScope a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  owl:disjointWith res:ContinuationPath ;
+  rdfs:label "assessment scope (experimental)"@en ;
+  rdfs:comment "An information artefact that identifies the real process path scoped by an assessment. It is not the process it denotes."@en .
+
+exp:CausalAttributionClaim a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  owl:disjointWith res:Interaction, res:ContinuationPath, res:ResonatusAssessment ;
+  rdfs:label "causal attribution claim (experimental)"@en ;
+  rdfs:comment "An information artefact asserting that a trace continuation is causally related to an interaction. It is distinct from the ontic res:causallyAttributedTo relation."@en .
+
+exp:hasCausalSegment a owl:ObjectProperty ;
+  rdfs:domain res:ContinuationPath ;
+  rdfs:label "has causal segment (experimental)"@en ;
+  rdfs:comment "Associates an ontic continuation path with a Trace, Propagation, Selectivity, or outcome witness playing a segment role on the proposed causal spine. Delay remains a separate temporal qualification witness. This relation is profile membership, not an assertion of BFO occurrent parthood."@en .
+
+exp:causallyPrecedes a owl:ObjectProperty, owl:IrreflexiveProperty, owl:AsymmetricProperty ;
+  rdfs:label "causally precedes (experimental)"@en ;
+  rdfs:comment "A directed, non-transitive causal-upstream edge selected at the profile's declared granularity. It does not require the entire upstream process to end before the downstream process begins, so overlapping causes and effects remain representable. Exact alignment to RO or another shared relation remains an owner decision."@en .
+
+exp:temporallyQualifiesPath a owl:ObjectProperty ;
+  rdfs:domain res:PostInteractionContinuation ;
+  rdfs:range res:ContinuationPath ;
+  rdfs:label "temporally qualifies path (experimental)"@en ;
+  rdfs:comment "States which ontic ContinuationPath a Delay witness temporally qualifies. This binds the temporal witness to the selected causal lineage without making the Delay a causal-spine segment or asserting a causal edge."@en .
+
+exp:hasAssessmentScope a owl:ObjectProperty ;
+  rdfs:domain res:ResonatusAssessment ;
+  rdfs:range exp:AssessmentScope ;
+  rdfs:label "has assessment scope (experimental)"@en .
+
+exp:scopesProcess a owl:ObjectProperty ;
+  rdfs:domain exp:AssessmentScope ;
+  rdfs:range res:ContinuationPath ;
+  rdfs:label "scopes process (experimental)"@en .
+
+exp:causalSubject a owl:ObjectProperty ;
+  rdfs:domain exp:CausalAttributionClaim ;
+  rdfs:label "causal subject (experimental)"@en ;
+  rdfs:comment "Identifies the subject of a claim without imposing an ontic range type. This prevents the claim layer alone from classifying the subject as a TraceContinuation."@en .
+
+exp:causalObject a owl:ObjectProperty ;
+  rdfs:domain exp:CausalAttributionClaim ;
+  rdfs:label "causal object (experimental)"@en ;
+  rdfs:comment "Identifies the object of a claim without imposing an ontic range type. This prevents the claim layer alone from classifying the object as an Interaction."@en .
+
+exp:usesCausalAssessmentMethod a owl:ObjectProperty ;
+  rdfs:domain exp:CausalAttributionClaim ;
+  rdfs:range res:AssessmentMethod ;
+  rdfs:label "uses causal assessment method (experimental)"@en .
