@@ -4,7 +4,7 @@
 
 **Status:** local, provisional, and non-published
 
-**Engineering disposition:** `CONDITIONAL GO` for owner inspection; `NO-GO` for publication
+**Engineering disposition:** `GO` for local final-artifact promotion; `NO-GO` for public publication
 
 This directory is a self-contained release-candidate package for the optional Resonatus Strict Linear
 and Strict Assessment profiles. It turns the bounded v1.1 prototype results into inspectable candidate
@@ -29,7 +29,7 @@ registration, or public claim of scientific validation.
 - `VERIFICATION_REPORT.md`: executed evidence and known unverified items.
 - `TEMPORAL_PORTABILITY_REPORT.md`: independent pySHACL/Jena temporal comparison.
 - `IRI_PUBLICATION_PLAN.md`: prepared permanent-identifier and redirect plan; not applied.
-- `OWNER_NORMATIVE_APPROVAL.md`: explicit owner sign-off gate.
+- `OWNER_NORMATIVE_APPROVAL.md`: completed design sign-off and publication boundary.
 - `CHECKSUMS.sha256`: SHA-256 checksums for every package artefact except the checksum file itself.
 
 ## Reproduce the checks

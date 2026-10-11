@@ -221,9 +221,11 @@ def main() -> int:
     approval = (RC / "OWNER_NORMATIVE_APPROVAL.md").read_text(encoding="utf-8")
     report(
         checks,
-        "normative owner gate remains explicit",
-        "PENDING_OWNER_SIGN_OFF" in approval
+        "normative owner gate and publication boundary",
+        "**Status:** `APPROVED`" in approval
         and all(f"N{number:02d}" in approval for number in range(1, 10))
+        and approval.count("`APPROVED`") >= 10
+        and "w3id PR require separate approval" in approval
         and "NO-GO" in approval,
     )
 

@@ -77,9 +77,11 @@ package must retain `NO-GO` publication status until a separate release decision
   engine/version combination.
 - A strict-IRI publication plan has been prepared without changing w3id.org. The existing v1.0.0
   redirects remain untouched.
-- Normative owner sign-off remains pending in
-  `profiles/v1.1-rc/OWNER_NORMATIVE_APPROVAL.md`; publication remains `NO-GO` until that record is
-  explicitly approved and final immutable redirect targets exist.
+- The owner approved N01–N09 on 2026-10-11 in
+  `profiles/v1.1-rc/OWNER_NORMATIVE_APPROVAL.md`. This authorizes permanent identity selection and
+  local final `1.1.0` artefact preparation only. Merge, tag, GitHub Release, Zenodo, and w3id PR
+  remain separately controlled publication actions. Public publication remains `NO-GO` until final
+  artefacts pass all gates and immutable redirect targets exist.
 
 ## Evidence required at each gate
 

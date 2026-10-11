@@ -1,6 +1,6 @@
 # Resonatus strict-profile IRI publication plan
 
-**Status:** prepared, not authorized for application
+**Status:** permanent identifier contract owner-approved; application not authorized
 
 ## Existing state verified on 2026-10-11
 
@@ -23,7 +23,7 @@ The remote bytes matched the local candidate with SHA-256
 
 ## Recommended permanent identifier contract
 
-For a final v1.1.0 publication, approve these identifiers:
+The owner approved these identifiers for final v1.1.0 artefact preparation:
 
 | Role | Identifier |
 |---|---|
@@ -64,11 +64,12 @@ resolve the v1.0.0 core. They do not replace or edit either current v1.0.0 rule.
 
 ## Publication sequence
 
-1. Record owner approval of the permanent identifiers and normative profile contract.
+1. Owner approval of the permanent identifiers and normative profile contract — **complete**.
 2. Promote the approved RC to final `1.1.0` artefacts and identifiers in a dedicated commit.
 3. Rerun package, portability, and repository regression gates; regenerate checksums.
 4. Push the immutable target and verify every raw HTTPS target.
-5. Prepare a minimal `perma-id/w3id.org` pull request touching only `ids/resonatus/.htaccess`.
+5. After separate authorization, prepare a minimal `perma-id/w3id.org` pull request touching only
+   `ids/resonatus/.htaccess`.
 6. Run the w3id repository checks and manually test every redirect after merge.
 
 No w3id fork, branch, commit, or pull request was created during RC preparation.

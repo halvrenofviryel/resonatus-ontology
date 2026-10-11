@@ -8,7 +8,8 @@
 
 ## Disposition
 
-`CONDITIONAL GO` for local owner inspection of the RC package. `NO-GO` for publication.
+`GO` for promotion to local final `1.1.0` artefacts following owner approval. `NO-GO` for public
+publication actions.
 
 The candidate replays all bounded prototype oracles successfully and keeps the published core
 separate. This is engineering verification, not domain validation or scientific confirmation.
@@ -68,7 +69,6 @@ require.
 
 ## Publication blockers
 
-- owner approval of permanent namespace, version, filenames, and release scope;
 - operational resolution and content-negotiation checks for the approved public IRIs;
 - final package review after any identifier change, followed by regenerated checksums and a complete
   regression run;
@@ -84,4 +84,4 @@ than repeating a network request.
 
 See `TEMPORAL_PORTABILITY_REPORT.md` for the independent engine evidence,
 `IRI_PUBLICATION_PLAN.md` for the non-applied redirect design, and `OWNER_NORMATIVE_APPROVAL.md` for
-the remaining explicit approval gate.
+the completed design approval and its publication limits.

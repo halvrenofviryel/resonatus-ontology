@@ -1,9 +1,10 @@
 # Resonatus v1.1 strict-profile owner approval record
 
-**Status:** `PENDING_OWNER_SIGN_OFF`
+**Status:** `APPROVED`
 
-This record is the remaining normative gate. Engineering evidence may populate the recommendations,
-but only the owner can change the status to `APPROVED` and supply the approval date.
+The owner approved N01–N09 on 2026-10-11. The approval authorizes preparation and preservation of
+local final `1.1.0` artefacts. It does not authorize merge, tag, GitHub Release, Zenodo publication, or
+a w3id.org pull request; each remains a separate publication action.
 
 ## Evidence available to the owner
 
@@ -21,27 +22,28 @@ but only the owner can change the status to `APPROVED` and supply the approval d
 
 | ID | Recommended selection | Owner status |
 |---|---|---|
-| N01 | Approve `https://w3id.org/resonatus/strict#` as the permanent term namespace and use final version identifiers ending in `/1.1.0` | `PENDING` |
-| N02 | Approve `strict:hasCausalNextStage` as a narrow, directed, asymmetric, irreflexive, non-transitive-declaration-free relation at declared granularity, without automatic RO/BFO equivalence | `PENDING` |
-| N03 | Retain `strict:temporallyQualifiesPath`; Delay is bound to a path but is not a causal-spine segment | `PENDING` |
-| N04 | Approve Strict Linear and Strict Assessment exactly as composed in `CONFORMANCE_CONTRACT.md`; ontic linkage remains independently reported | `PENDING` |
-| N05 | Approve local role-distinctness constraints and only the optional `AssessmentScope`/`ContinuationPath` OWL disjointness; no broad global disjointness regime | `PENDING` |
-| N06 | Approve canonical UTC-second timestamps and value-based comparison, with the verified two-engine baseline recorded in `TEMPORAL_PORTABILITY_REPORT.md` | `PENDING` |
-| N07 | Preserve the five constitutive criteria, published core semantics, default v1.0.0 shape, and branch/merge exclusion from the first strict profile | `PENDING` |
-| N08 | Approve public positioning as an optional applied-ontology vocabulary and assessment framework; conformance must not be presented as scientific validation | `PENDING` |
-| N09 | Do not publish the RC identifiers as final; promote approved artefacts to `1.1.0`, then create immutable targets and a separate w3id pull request | `PENDING` |
+| N01 | Approve `https://w3id.org/resonatus/strict#` as the permanent term namespace and use final version identifiers ending in `/1.1.0` | `APPROVED` |
+| N02 | Approve `strict:hasCausalNextStage` as a narrow, directed, asymmetric, irreflexive, non-transitive-declaration-free relation at declared granularity, without automatic RO/BFO equivalence | `APPROVED` |
+| N03 | Retain `strict:temporallyQualifiesPath`; Delay is bound to a path but is not a causal-spine segment | `APPROVED` |
+| N04 | Approve Strict Linear and Strict Assessment exactly as composed in `CONFORMANCE_CONTRACT.md`; ontic linkage remains independently reported | `APPROVED` |
+| N05 | Approve local role-distinctness constraints and only the optional `AssessmentScope`/`ContinuationPath` OWL disjointness; no broad global disjointness regime | `APPROVED` |
+| N06 | Approve canonical UTC-second timestamps and value-based comparison, with the verified two-engine baseline recorded in `TEMPORAL_PORTABILITY_REPORT.md` | `APPROVED` |
+| N07 | Preserve the five constitutive criteria, published core semantics, default v1.0.0 shape, and branch/merge exclusion from the first strict profile | `APPROVED` |
+| N08 | Approve public positioning as an optional applied-ontology vocabulary and assessment framework; conformance must not be presented as scientific validation | `APPROVED` |
+| N09 | Do not publish the RC identifiers as final; promote approved artefacts to `1.1.0`, then create immutable targets and a separate w3id pull request | `APPROVED` |
 
 ## Sign-off
 
 ```text
-Owner:
-Approved selections: N01–N09 / exceptions listed below
-Exceptions:
-Approved normative impact:
-Approved publication scope:
-Approval date:
-Approval status: APPROVED | REJECTED | REVISION_REQUIRED
+Owner: Ali Toygar Abak
+Approved selections: N01–N09
+Exceptions: None
+Approved normative impact: Permanent strict-profile identity contract and preparation of final 1.1.0 artefacts
+Approved publication scope: Local preparation and preservation-branch push only; merge, tag, GitHub Release, Zenodo, and w3id PR require separate approval
+Approval date: 2026-10-11
+Approval status: APPROVED
 ```
 
-Until this block is completed, the engineering disposition remains `CONDITIONAL GO` for inspection
-and `NO-GO` for normative publication.
+The normative design gate is closed. Public publication remains `NO-GO` until final artefacts pass all
+gates, immutable HTTPS targets exist, w3id resolution is operational, and a separate publication action
+is authorized.
