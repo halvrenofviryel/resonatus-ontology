@@ -1,0 +1,51 @@
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+strict:SeparateAssessmentScopeShape a sh:NodeShape ;
+  sh:targetClass res:ResonatusAssessment ;
+  sh:targetSubjectsOf res:assesses ;
+  sh:property [ sh:path res:assesses ; sh:minCount 1 ;
+    sh:message "MISSING_SCOPE_DATA: an assessment needs an assessed candidate." ] ;
+  sh:property [ sh:path res:assesses ; sh:maxCount 1 ; sh:class res:ResonatusCandidate ;
+    sh:message "VIOLATION_SCOPE_CARDINALITY: an assessment must assess exactly one candidate." ] ;
+  sh:property [ sh:path res:assessesPath ; sh:minCount 1 ;
+    sh:message "MISSING_SCOPE_DATA: an assessment needs an assessed path." ] ;
+  sh:property [ sh:path res:assessesPath ; sh:maxCount 1 ; sh:class res:ContinuationPath ;
+    sh:message "VIOLATION_SCOPE_CARDINALITY: an assessment must assess exactly one ContinuationPath." ] ;
+  sh:property [ sh:path strict:hasAssessmentScope ; sh:minCount 1 ;
+    sh:message "MISSING_SCOPE_DATA: an assessment needs an AssessmentScope." ] ;
+  sh:property [ sh:path strict:hasAssessmentScope ; sh:maxCount 1 ; sh:class strict:AssessmentScope ;
+    sh:message "VIOLATION_SCOPE_CARDINALITY: an assessment must have exactly one AssessmentScope." ] ;
+  sh:sparql [
+    sh:message "MISSING_SCOPE_DATA: the AssessmentScope must denote the assessed ContinuationPath." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#assessesPath> ?path ;
+              <https://w3id.org/resonatus/strict#hasAssessmentScope> ?scope .
+        FILTER NOT EXISTS {
+          ?scope <https://w3id.org/resonatus/strict#scopesProcess> ?path .
+        }
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_SCOPE_IDENTITY: AssessmentScope, assessment, candidate, and process path must be distinct nodes." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#assesses> ?candidate ;
+              <https://w3id.org/resonatus#assessesPath> ?path ;
+              <https://w3id.org/resonatus/strict#hasAssessmentScope> ?scope .
+        FILTER (?scope IN ($this, ?candidate, ?path) || ?candidate = ?path || $this IN (?candidate, ?path))
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_SCOPE_CATEGORY: AssessmentScope must not be typed as ContinuationPath." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus/strict#hasAssessmentScope> ?scope .
+        ?scope a <https://w3id.org/resonatus#ContinuationPath> .
+      }
+    """
+  ] .

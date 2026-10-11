@@ -1,0 +1,8 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+@prefix res: <https://w3id.org/resonatus#> .
+
+ex:claim a strict:CausalAttributionClaim ;
+  strict:causalSubject ex:trace ; strict:causalObject ex:origin ;
+  res:supportedBy ex:causalEvidence .
+ex:causalEvidence a res:Evidence .
