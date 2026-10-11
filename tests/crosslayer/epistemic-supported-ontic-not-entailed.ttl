@@ -1,0 +1,33 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+
+# CL2: the assessment reports five PASS verdicts, but the supplied ontic graph omits the Selectivity
+# witness and therefore does not entail Resonatus. This deliberate disagreement verifies that verdicts
+# do not create OWL facts.
+ex:epistemic_supported_ontic_not_entailed a res:ResonatusCandidate ;
+  res:expectedClassification "MEMBERSHIP_SUPPORTED" ;
+  res:hasTracePath ex:cl2_path .
+
+ex:cl2_assessment a res:ResonatusAssessment ;
+  res:assesses ex:epistemic_supported_ontic_not_entailed ;
+  res:assessesPath ex:cl2_path ;
+  res:hasCriterionAssessment ex:cl2_c1, ex:cl2_c2, ex:cl2_c3, ex:cl2_c4, ex:cl2_c5 .
+
+ex:cl2_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:cl2_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:cl2_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:cl2_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:cl2_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+ex:cl2_origin a res:Interaction .
+ex:cl2_receiver a res:ReceiverContext .
+ex:cl2_trace a res:TraceContinuation ; res:causallyAttributedTo ex:cl2_origin .
+ex:cl2_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:cl2_origin .
+ex:cl2_propagation a res:PropagationEvent ; res:hasPropagationReceiver ex:cl2_receiver .
+ex:cl2_transformation a res:TransformationEvent .
+ex:cl2_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:cl2_origin ;
+  res:hasTraceContinuation ex:cl2_trace ;
+  res:hasPostInteractionContinuation ex:cl2_delay ;
+  res:hasPropagationEvent ex:cl2_propagation ;
+  res:hasTransformationEvent ex:cl2_transformation .

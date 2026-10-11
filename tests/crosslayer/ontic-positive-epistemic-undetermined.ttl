@@ -1,0 +1,35 @@
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/case/> .
+
+# CL1: the supplied ontic graph entails Resonatus, while the assessment remains epistemically
+# UNDETERMINED. This deliberate disagreement verifies that an OWL assertion does not manufacture an
+# evidential PASS.
+ex:ontic_positive_epistemic_undetermined a res:ResonatusCandidate ;
+  res:expectedClassification "UNDETERMINED" ;
+  res:hasTracePath ex:cl1_path .
+
+ex:cl1_assessment a res:ResonatusAssessment ;
+  res:assesses ex:ontic_positive_epistemic_undetermined ;
+  res:assessesPath ex:cl1_path ;
+  res:hasCriterionAssessment ex:cl1_c1, ex:cl1_c2, ex:cl1_c3, ex:cl1_c4, ex:cl1_c5 .
+
+ex:cl1_c1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:cl1_c2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:cl1_c3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:cl1_c4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:INCONCLUSIVE .
+ex:cl1_c5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+ex:cl1_origin a res:Interaction .
+ex:cl1_receiver a res:ReceiverContext .
+ex:cl1_trace a res:TraceContinuation ; res:causallyAttributedTo ex:cl1_origin .
+ex:cl1_delay a res:PostInteractionContinuation ; res:postInteractionOf ex:cl1_origin .
+ex:cl1_propagation a res:PropagationEvent ; res:hasPropagationReceiver ex:cl1_receiver .
+ex:cl1_selectivity a res:ContextModulation ; res:uptakeDependsOn ex:cl1_receiver .
+ex:cl1_transformation a res:TransformationEvent .
+ex:cl1_path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:cl1_origin ;
+  res:hasTraceContinuation ex:cl1_trace ;
+  res:hasPostInteractionContinuation ex:cl1_delay ;
+  res:hasPropagationEvent ex:cl1_propagation ;
+  res:hasContextModulation ex:cl1_selectivity ;
+  res:hasTransformationEvent ex:cl1_transformation .

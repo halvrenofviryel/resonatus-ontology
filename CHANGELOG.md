@@ -1,5 +1,34 @@
 # Changelog
 
+## Unreleased
+
+## 1.1.0 — 2026-10-11
+
+- Added the owner-approved, opt-in Strict Linear and Strict Assessment package under
+  `profiles/v1.1/`, without importing it into or changing the semantics of the frozen v1.0.0 core.
+- Added directed causal-spine, Delay/path binding, assessment-scope, claim-record, ontic-linkage, and
+  evidence-record SHACL dimensions plus a machine-readable multidimensional result schema.
+- Preserved ontic causal assertions separately from epistemic claim records; strict conformance does
+  not assert scientific adequacy, causal truth, or validation of a natural kind.
+- Verified the v1.1 package with 15/15 scenarios, 27/27 mutation gates, 26/26 OWL module-integration
+  checks, 27/27 package-integrity gates, and an 8/8 temporal matrix on pySHACL 0.40.1/RDFLib 7.6.0
+  and Apache Jena SHACL 6.2.0.
+- Retained all post-v1.0.0 validation and documentation hardening:
+
+- Isolated the negative assessment SHACL fixtures so missing `assessesPath` no longer lets unrelated
+  tests pass for the wrong reason. The SHACL runner now asserts expected report components, paths, and
+  identifying SPARQL messages, not only `conforms = false`.
+- Added R26 to verify `sh:targetClass` discovery through `rdfs:subClassOf` in the data graph while the
+  runner remains on `inference="none"`.
+- Replaced the cross-layer runner's Boolean OWL result with `ENTAILED`, `NOT_ENTAILED`, `INCONSISTENT`,
+  and `EXECUTION_ERROR`; inconsistent input is now a hard failure rather than negative membership.
+  The runner also recomputes the epistemic classification from criterion verdicts instead of trusting
+  the declared expected label alone.
+- Added two deliberate ontic/epistemic disagreement fixtures to verify layer independence. The 13
+  existing examples remain aligned regression fixtures, not evidence of a general equivalence.
+- Clarified diagram notation, witness mixing, causal-attribution semantics, and executable competency
+  coverage (`7/22`; `7/7` only among the queries that exist).
+
 ## 1.0.0 — 2026-08-15 (first public release)
 - First public, archival release of the Resonatus ontology research artefact.
 - Persistent identifiers fixed: ontology IRI `https://w3id.org/resonatus`, namespace

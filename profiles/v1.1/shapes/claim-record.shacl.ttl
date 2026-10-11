@@ -1,0 +1,19 @@
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+strict:CausalClaimRecordShape a sh:NodeShape ;
+  sh:targetClass strict:CausalAttributionClaim ;
+  sh:targetSubjectsOf strict:causalSubject ;
+  sh:property [ sh:path strict:causalSubject ; sh:minCount 1 ;
+    sh:message "MISSING_CLAIM_RECORD_DATA: a causal claim needs a subject." ] ;
+  sh:property [ sh:path strict:causalSubject ; sh:maxCount 1 ;
+    sh:message "VIOLATION_CLAIM_RECORD_CARDINALITY: a causal claim must have exactly one subject." ] ;
+  sh:property [ sh:path strict:causalObject ; sh:minCount 1 ;
+    sh:message "MISSING_CLAIM_RECORD_DATA: a causal claim needs an object." ] ;
+  sh:property [ sh:path strict:causalObject ; sh:maxCount 1 ;
+    sh:message "VIOLATION_CLAIM_RECORD_CARDINALITY: a causal claim must have exactly one object." ] ;
+  sh:property [ sh:path strict:usesCausalAssessmentMethod ; sh:minCount 1 ;
+    sh:message "MISSING_CLAIM_RECORD_DATA: a causal claim needs an assessment method." ] ;
+  sh:property [ sh:path strict:usesCausalAssessmentMethod ; sh:class res:AssessmentMethod ;
+    sh:message "VIOLATION_CLAIM_RECORD_TYPE: the causal assessment method must be an AssessmentMethod." ] .

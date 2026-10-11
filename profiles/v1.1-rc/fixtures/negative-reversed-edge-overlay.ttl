@@ -1,0 +1,5 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+
+# Add to b-valid-process-path.ttl. The reverse edge is an explicit direction violation.
+ex:trace strict:hasCausalNextStage ex:origin .

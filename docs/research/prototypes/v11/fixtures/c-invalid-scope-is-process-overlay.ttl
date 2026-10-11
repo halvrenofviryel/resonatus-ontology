@@ -1,0 +1,24 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+
+ex:assessment a res:ResonatusAssessment ;
+  res:assesses ex:candidate ;
+  res:assessesPath ex:path ;
+  exp:hasAssessmentScope ex:path ;
+  res:hasCriterionAssessment ex:caTrace, ex:caDelay, ex:caPropagation, ex:caSelectivity, ex:caOutcome .
+ex:path a exp:AssessmentScope ; exp:scopesProcess ex:path .
+
+ex:caTrace a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:caDelay a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:caPropagation a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:caSelectivity a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:caOutcome a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+
+ex:claim a exp:CausalAttributionClaim ;
+  exp:causalSubject ex:trace ;
+  exp:causalObject ex:origin ;
+  res:supportedBy ex:causalEvidence ;
+  exp:usesCausalAssessmentMethod ex:causalMethod .
+ex:causalEvidence a res:Evidence .
+ex:causalMethod a res:AssessmentMethod .

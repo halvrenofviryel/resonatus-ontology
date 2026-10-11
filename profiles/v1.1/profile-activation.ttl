@@ -1,0 +1,13 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+<https://w3id.org/resonatus/strict/profile/strict-linear/1.1.0> a prov:Plan ;
+  dcterms:title "Resonatus Strict Linear Conformance 1.1.0"@en ;
+  dcterms:description "Opt-in conformance plan requiring IN_SCOPE applicability, conforming linear lineage validation, and conforming temporal Delay validation. Branch/merge is outside scope. Conformance is not scientific verification."@en ;
+  owl:versionInfo "1.1.0" .
+
+<https://w3id.org/resonatus/strict/profile/strict-assessment/1.1.0> a prov:Plan ;
+  dcterms:title "Resonatus Strict Assessment Conformance 1.1.0"@en ;
+  dcterms:description "Opt-in conformance plan requiring Strict Linear Conformance plus conforming assessment-scope, claim-record, and evidence-record validation. Ontic linkage is reported independently. Domain evidence adequacy remains unassessed."@en ;
+  owl:versionInfo "1.1.0" .

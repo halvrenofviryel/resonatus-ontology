@@ -1,0 +1,31 @@
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+@prefix res: <https://w3id.org/resonatus#> .
+
+# Research counterexample CE02.
+#
+# No disjointness or temporal/causal constraint prevents one individual from playing the candidate,
+# path, origin, receiver, and all five witness roles. The self-linked graph is consistent, is inferred
+# to be a res:Resonatus, and conforms to the current SHACL path-coherence profile. The example is not a
+# proposed real-world interpretation; it is a model-theoretic probe of what the axioms currently allow.
+
+ex:collapsed a
+    res:ResonatusCandidate,
+    res:ContinuationPath,
+    res:Interaction,
+    res:TraceContinuation,
+    res:PostInteractionContinuation,
+    res:PropagationEvent,
+    res:ContextModulation,
+    res:TransformationEvent,
+    res:ReceiverContext ;
+  res:hasTracePath ex:collapsed ;
+  res:hasDeclaredOriginInteraction ex:collapsed ;
+  res:hasTraceContinuation ex:collapsed ;
+  res:causallyAttributedTo ex:collapsed ;
+  res:hasPostInteractionContinuation ex:collapsed ;
+  res:postInteractionOf ex:collapsed ;
+  res:hasPropagationEvent ex:collapsed ;
+  res:hasPropagationReceiver ex:collapsed ;
+  res:hasContextModulation ex:collapsed ;
+  res:uptakeDependsOn ex:collapsed ;
+  res:hasTransformationEvent ex:collapsed .

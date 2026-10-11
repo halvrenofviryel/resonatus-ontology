@@ -1,0 +1,33 @@
+@prefix ex: <https://example.org/resonatus/reasoner/> .
+@prefix res: <https://w3id.org/resonatus#> .
+
+# Research counterexample CE01.
+#
+# The graph supplies every membership witness and every SHACL co-reference required by v1.0.0,
+# but asserts no temporal, causal, parthood, participation, or continuation relation between the
+# five witness individuals. OWL nevertheless entails that ex:candidate is a res:Resonatus and the
+# current SHACL path-coherence profile conforms. This demonstrates co-location under a path node,
+# not a shared causal lineage.
+
+ex:candidate a res:ResonatusCandidate ;
+  res:hasTracePath ex:path .
+
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:origin ;
+  res:hasTraceContinuation ex:trace ;
+  res:hasPostInteractionContinuation ex:delay ;
+  res:hasPropagationEvent ex:propagation ;
+  res:hasContextModulation ex:selectivity ;
+  res:hasTransformationEvent ex:transformation .
+
+ex:origin a res:Interaction .
+ex:trace a res:TraceContinuation ;
+  res:causallyAttributedTo ex:origin .
+ex:delay a res:PostInteractionContinuation ;
+  res:postInteractionOf ex:origin .
+ex:propagation a res:PropagationEvent ;
+  res:hasPropagationReceiver ex:receiver .
+ex:selectivity a res:ContextModulation ;
+  res:uptakeDependsOn ex:receiver .
+ex:transformation a res:TransformationEvent .
+ex:receiver a res:ReceiverContext .

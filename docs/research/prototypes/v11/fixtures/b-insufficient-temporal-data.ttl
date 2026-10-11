@@ -1,0 +1,26 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+
+# Structurally valid linear lineage with no interval assertions. The temporal dimension is therefore
+# INSUFFICIENT_DATA, not a factual denial of Delay.
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:path .
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:origin ;
+  res:hasTraceContinuation ex:trace ;
+  res:hasPostInteractionContinuation ex:delay ;
+  res:hasPropagationEvent ex:propagation ;
+  res:hasContextModulation ex:selectivity ;
+  res:hasTransformationEvent ex:transformation ;
+  exp:hasCausalSegment ex:trace, ex:propagation, ex:selectivity, ex:transformation .
+ex:origin a res:Interaction ; exp:causallyPrecedes ex:trace .
+ex:trace a res:TraceContinuation ;
+  res:causallyAttributedTo ex:origin ; exp:causallyPrecedes ex:propagation .
+ex:delay a res:PostInteractionContinuation ; res:postInteractionOf ex:origin ;
+  exp:temporallyQualifiesPath ex:path .
+ex:propagation a res:PropagationEvent ;
+  res:hasPropagationReceiver ex:receiver ; exp:causallyPrecedes ex:selectivity .
+ex:selectivity a res:ContextModulation ;
+  res:uptakeDependsOn ex:receiver ; exp:causallyPrecedes ex:transformation .
+ex:transformation a res:TransformationEvent .
+ex:receiver a res:ReceiverContext .

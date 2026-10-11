@@ -1,0 +1,43 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:candidate a res:ResonatusCandidate ; res:hasTracePath ex:path .
+ex:path a res:ContinuationPath ;
+  res:hasDeclaredOriginInteraction ex:origin ; res:hasTraceContinuation ex:trace ;
+  res:hasPostInteractionContinuation ex:delay ; res:hasPropagationEvent ex:propagation ;
+  res:hasContextModulation ex:selectivity ; res:hasTransformationEvent ex:transformation ;
+  strict:hasCausalSegment ex:trace, ex:propagation, ex:selectivity, ex:transformation .
+ex:origin a res:Interaction ; res:hasTemporalExtent ex:originInterval ;
+  strict:hasCausalNextStage ex:trace .
+ex:trace a res:TraceContinuation ; strict:hasCausalNextStage ex:propagation .
+ex:delay a res:PostInteractionContinuation ; res:postInteractionOf ex:origin ;
+  strict:temporallyQualifiesPath ex:path ; res:hasTemporalExtent ex:delayInterval .
+ex:propagation a res:PropagationEvent ; res:hasPropagationReceiver ex:receiver ;
+  strict:hasCausalNextStage ex:selectivity .
+ex:selectivity a res:ContextModulation ; res:uptakeDependsOn ex:receiver ;
+  strict:hasCausalNextStage ex:transformation .
+ex:transformation a res:TransformationEvent . ex:receiver a res:ReceiverContext .
+
+ex:assessment a res:ResonatusAssessment ; res:assesses ex:candidate ; res:assessesPath ex:path ;
+  strict:hasAssessmentScope ex:scope ;
+  res:hasCriterionAssessment ex:caTrace, ex:caDelay, ex:caPropagation, ex:caSelectivity, ex:caOutcome .
+ex:scope a strict:AssessmentScope ; strict:scopesProcess ex:path .
+ex:caTrace a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:caDelay a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:caPropagation a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:caSelectivity a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:PASS .
+ex:caOutcome a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:PASS .
+ex:claim a strict:CausalAttributionClaim ; strict:causalSubject ex:trace ;
+  strict:causalObject ex:origin ; res:supportedBy ex:causalEvidence ;
+  strict:usesCausalAssessmentMethod ex:causalMethod .
+ex:causalEvidence a res:Evidence . ex:causalMethod a res:AssessmentMethod .
+
+ex:originInterval a time:ProperInterval ; time:hasBeginning ex:originBegin ; time:hasEnd ex:originEnd .
+ex:originBegin a time:Instant ; time:inXSDDateTimeStamp "2026-01-01T10:00:00Z"^^xsd:dateTimeStamp .
+ex:originEnd a time:Instant ; time:inXSDDateTimeStamp "2026-01-01T11:00:00Z"^^xsd:dateTimeStamp .
+ex:delayInterval a time:ProperInterval ; time:hasBeginning ex:delayBegin ; time:hasEnd ex:delayEnd .
+ex:delayBegin a time:Instant ; time:inXSDDateTimeStamp "2026-01-01T10:30:00Z"^^xsd:dateTimeStamp .
+ex:delayEnd a time:Instant ; time:inXSDDateTimeStamp "2026-01-01T12:00:00Z"^^xsd:dateTimeStamp .

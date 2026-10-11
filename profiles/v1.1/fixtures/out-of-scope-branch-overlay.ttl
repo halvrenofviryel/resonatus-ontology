@@ -1,0 +1,5 @@
+@prefix ex: <https://example.org/resonatus/prototype/> .
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+
+# Add to b-valid-process-path.ttl. Origin then has two in-profile successors.
+ex:origin strict:hasCausalNextStage ex:propagation .

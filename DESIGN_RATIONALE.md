@@ -19,7 +19,8 @@ Resonatus ≡ ResonatusCandidate ⊓ ∃hasTraceContinuation.… ⊓ ∃hasPostI
 
 In OWL 2 DL each existential may be satisfied by a *different* individual, so a candidate aggregating
 witnesses from unrelated lineages would be entailed as Resonatus — a false reading the definition does
-not intend.
+not intend. This failure mode is called **witness mixing** in this repository: one classification is
+assembled from criterion witnesses that belong to different continuation paths.
 
 ## 2. The reified path (why it is the chosen structure)
 
@@ -28,10 +29,18 @@ forced to share the same filler individual (there is no co‑designation of exis
 pattern). The available way to obtain same‑scope coherence *inside* OWL 2 DL is therefore to **reify**
 the shared scope as an individual and hang the conditions off that one node:
 
+The diagram notation is not one undifferentiated arrow language. The object-property assertion pattern
+and class hierarchy are:
+
 ```
-ResonatusCandidate --hasTracePath--> ContinuationPath --> CausalTraceProcess --> ResonatusPath
-Resonatus ≡ ResonatusCandidate ⊓ (∃ hasTracePath . ResonatusPath)
+ResonatusCandidate --hasTracePath--> ContinuationPath
+ResonatusPath ⊆ CausalTraceProcess ⊆ ContinuationPath
+Resonatus ≡ ResonatusCandidate ⊓ (∃ hasTracePath.ResonatusPath)
 ```
+
+`--hasTracePath-->` denotes an RDF/OWL object-property edge. `⊆` denotes `rdfs:subClassOf`. The
+equivalence is a class expression, not an edge from `ResonatusCandidate` to `Resonatus`. The
+architecture figure uses a legend with the same distinction.
 
 - `ContinuationPath` — an ontic, temporally extended continuation path. It is deliberately **Trace‑
   neutral**: causal status is *not* presupposed at this genus. This preserves the methodological point
@@ -73,23 +82,34 @@ Accordingly:
 The manuscript claim is scoped to match: OWL captures the path‑level semantics; origin/receiver coherence
 is a validation‑profile guarantee, not an OWL entailment.
 
-## 4. Selectivity
+## 4. Causal attribution
+
+`res:causallyAttributedTo` relates a `TraceContinuation` to the `Interaction` asserted to cause that
+continuation. Its cross-domain meaning is stable: the relation is stronger than temporal succession,
+shared identity, storage, provenance, or generic influence. What varies by domain is the method used to
+warrant the assertion — for example an intervention, a mechanism, or a domain-specific causal model —
+not the relation's definition. The ontology records the causal commitment and the assessment layer can
+record its method; neither OWL nor SHACL discovers causation from arbitrary observations.
+
+## 5. Selectivity
 
 Selectivity requires that downstream uptake **materially depends on** a receiver context
 (`res:uptakeDependsOn`), not merely that a receiver context is present. The ontology records this
 dependence commitment; evidential adequacy for the dependence is an assessment‑layer matter.
 
-## 5. Upper‑ontology placement
+## 6. Upper‑ontology placement
 
 The optional BFO 2020 bridge places `ResonatusCandidate`, `Interaction`, and `ContinuationPath` under
 BFO `process`; `CausalTraceProcess` and `ResonatusPath` inherit that placement through `ContinuationPath`.
 The genus is treated as a plain process; no commitment to a more specific BFO category is made without
 dedicated analysis. Core + bridge + the pinned BFO 2020 is consistent with all key classes satisfiable.
 
-## 6. Epistemic separation
+## 7. Epistemic separation
 
 `PASS` / `FAIL` / `NOT_MEASURED` / `INCONCLUSIVE` / `ERROR` are assessment outcomes, not ontological
-truth values. A criterion that is not measured or is inconclusive yields *non‑entailment* under the
-open‑world assumption, never a falsehood; the assessment layer distinguishes a measured failure from an
-unmeasured one, while the ontic layer treats both as non‑entailment. SHACL conformance validates record
-structure and path coherence; it does not assert that a Resonatus exists in the world.
+truth values. A verdict never creates or removes an OWL fact. If the ontic graph separately contains a
+qualifying path, OWL may entail `Resonatus` while the assessment remains `UNDETERMINED`; conversely,
+five PASS verdicts do not make an incomplete ontic graph entail membership. The aligned worked examples
+deliberately make the layers agree, while `tests/crosslayer/` contains both disagreement directions as
+independence regressions. SHACL conformance validates record structure and path coherence; it does not
+assert that a Resonatus exists in the world.

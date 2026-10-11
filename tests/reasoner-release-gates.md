@@ -137,6 +137,31 @@ A five-criterion `ResonatusAssessment` that declares no `res:assessesPath`. Ever
 scoped to exactly one `ContinuationPath` (`res:assessesPath` `sh:minCount 1`), so a path-less full
 assessment is not a path-coherent record. SHACL: **non-conform**.
 
+## Post-release validation-hardening gates on main
+
+### R26 — `sh:targetClass` reaches data-graph subclasses  (`tests/shacl/path-r26-targetclass-subclass.ttl`)
+
+The fixture types its assessment only as an instance of a class linked to `ResonatusAssessment` by
+`rdfs:subClassOf` in the data graph. The assessment is otherwise complete but omits `assessesPath`.
+SHACL Core target discovery must therefore select it and report exactly the `assessesPath` min-count
+violation even though the runner uses `inference="none"`. SHACL: **non-conform**.
+
+### CL1 and CL2 — Ontic and epistemic layer independence  (`tests/crosslayer/`)
+
+- CL1 supplies a complete ontic path but an `INCONCLUSIVE` assessment position. Expected: OWL
+  `ENTAILED`, epistemic `UNDETERMINED`, SHACL conforming.
+- CL2 supplies five PASS verdicts but omits one ontic witness. Expected: OWL `NOT_ENTAILED`, epistemic
+  `MEMBERSHIP_SUPPORTED`, SHACL conforming.
+
+These are deliberate disagreements. They verify that the original 13 aligned examples are regression
+fixtures, not a semantic equivalence between OWL membership and evidential support.
+
+### CL3 and CL4 — Inconsistent and execution-error outcomes
+
+The cross-layer runner reuses `tests/owl-two-declared-origins-inconsistent.ttl` and requires the outcome
+`INCONSISTENT`. It also probes an intentionally absent input and requires `EXECUTION_ERROR`.
+`INCONSISTENT` and `EXECUTION_ERROR` are never accepted as `NOT_ENTAILED`.
+
 ## Verification status
 
 On the frozen release tree, `scripts/run_reasoner_gates.py` reports **all of R2–R17 behaving as
@@ -146,3 +171,5 @@ assessment + path-coherence gates (R18–R25) as specified (pyShACL). R1/R5 are 
 reasoning + `Resonatus` instances. The origin/receiver coherence gates are **SHACL-enforced** (not
 captured by the ontology's OWL 2 DL role pattern). All gates were reproduced offline from a clean tree
 in a separate verification pass with a separate toolchain; see `FORMAL_VERIFICATION_REPORT.md`.
+Current `main` additionally runs R26 and CL1–CL4; those post-release hardening gates are not claims about
+the frozen v1.0.0 verification run.

@@ -1,0 +1,18 @@
+# R26 — sh:targetClass must also target instances of subclasses declared in the data graph, even when
+# the validation runner uses inference="none". The record is otherwise complete but intentionally
+# omits assessesPath; correct target discovery therefore exposes exactly the assessesPath minCount
+# violation. If subclass targeting regresses, this graph would incorrectly conform.
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix ex: <https://example.org/resonatus/assess/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:SpecialAssessment rdfs:subClassOf res:ResonatusAssessment .
+ex:cand a res:ResonatusCandidate .
+ex:a a ex:SpecialAssessment ;
+  res:assesses ex:cand ;
+  res:hasCriterionAssessment ex:ca1, ex:ca2, ex:ca3, ex:ca4, ex:ca5 .
+ex:ca1 a res:CriterionAssessment ; res:criterion res:TraceCriterion ; res:verdict res:PASS .
+ex:ca2 a res:CriterionAssessment ; res:criterion res:DelayCriterion ; res:verdict res:PASS .
+ex:ca3 a res:CriterionAssessment ; res:criterion res:PropagationCriterion ; res:verdict res:PASS .
+ex:ca4 a res:CriterionAssessment ; res:criterion res:SelectivityCriterion ; res:verdict res:INCONCLUSIVE .
+ex:ca5 a res:CriterionAssessment ; res:criterion res:TransformationFeedbackCriterion ; res:verdict res:NOT_MEASURED .

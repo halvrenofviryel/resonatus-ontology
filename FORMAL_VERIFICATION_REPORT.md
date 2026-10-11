@@ -1,12 +1,16 @@
 # Formal Verification Report — Resonatus Ontology v1.0.0
 
+> This is the historical report for the frozen `v1.0.0` tag. Current `main` adds stricter negative-test
+> isolation, SHACL report assertions, layer-independence fixtures, and an explicit inconsistent-ontology
+> outcome guard; see `docs/review-feedback-remediation-2026-10-11.md`.
+
 **Scope:** formal / tool / reproducibility verification of the artefact only. This report makes **no**
 claim of empirical or scientific validation of Resonatus; it records what standard reasoning and
 validation tools report for the frozen release tree.
 
 **Artefact:** Resonatus Ontology v1.0.0 — ontology IRI `https://w3id.org/resonatus`, version IRI
-`https://w3id.org/resonatus/1.0.0`, DOI `10.5281/zenodo.21939903`. The exact frozen commit SHA will be
-recorded in the GitHub `v1.0.0` release tag and the Zenodo record at release.
+`https://w3id.org/resonatus/1.0.0`, DOI `10.5281/zenodo.21939903`. The frozen source tree is Git commit
+`f7be377d3b355f1dbe1911f12bf597d62355619d`, referenced by the GitHub `v1.0.0` release tag.
 
 ## Environment
 
@@ -51,8 +55,8 @@ All gates behaved as specified in `tests/reasoner-release-gates.md`.
   assessment must be scoped to exactly one `ContinuationPath`; `res:assessesPath` `sh:minCount 1`).
 
 **Cross‑layer:** 13/13 worked examples satisfy `OWL Resonatus ⇔ expectedClassification ==
-MEMBERSHIP_SUPPORTED`; `NON_MEMBERSHIP_SUPPORTED` and `UNDETERMINED` both map to OWL non‑entailment
-(the distinction is epistemic; the open‑world assumption is respected).
+MEMBERSHIP_SUPPORTED`. This records the behavior of those intentionally aligned release fixtures; it is
+not a general equivalence between ontic membership and epistemic support.
 
 **Reference / structural / documentation:** reference classifier 13/13; structural audit 13/13;
 documentation wording lint pass.

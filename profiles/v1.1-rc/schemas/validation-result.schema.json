@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/resonatus/strict/schema/validation-result/1.1.0-rc.1",
+  "title": "Resonatus strict-profile validation result RC 1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidateVersion",
+    "profile",
+    "owlOutcome",
+    "applicability",
+    "dimensions",
+    "causalCommitment",
+    "scientificEvidenceStatus",
+    "findings"
+  ],
+  "properties": {
+    "candidateVersion": { "const": "1.1.0-rc.1" },
+    "profile": {
+      "enum": ["STRICT_LINEAR", "STRICT_ASSESSMENT"]
+    },
+    "owlOutcome": {
+      "enum": ["OWL_ENTAILED", "OWL_NOT_ENTAILED", "OWL_INCONSISTENT", "OWL_EXECUTION_ERROR"]
+    },
+    "applicability": {
+      "enum": ["IN_SCOPE", "OUT_OF_SCOPE"]
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "structural",
+        "temporal",
+        "assessmentScope",
+        "claimRecord",
+        "onticLinkage",
+        "evidenceRecord"
+      ],
+      "properties": {
+        "structural": { "$ref": "#/$defs/validationOutcome" },
+        "temporal": { "$ref": "#/$defs/validationOutcome" },
+        "assessmentScope": { "$ref": "#/$defs/validationOutcome" },
+        "claimRecord": { "$ref": "#/$defs/validationOutcome" },
+        "onticLinkage": { "$ref": "#/$defs/validationOutcome" },
+        "evidenceRecord": { "$ref": "#/$defs/validationOutcome" }
+      }
+    },
+    "causalCommitment": {
+      "enum": ["EXPLICIT_ONTIC_RELATION", "EXISTENTIAL_COMMITMENT_ONLY", "NONE_IDENTIFIED"]
+    },
+    "scientificEvidenceStatus": {
+      "enum": ["DOMAIN_EVIDENCE_UNASSESSED", "DOMAIN_EVIDENCE_NOT_EVALUATED"]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dimension", "code", "message"],
+        "properties": {
+          "dimension": { "type": "string" },
+          "code": { "type": "string", "pattern": "^(MISSING|VIOLATION|OUT_OF_SCOPE|ENGINE)_" },
+          "message": { "type": "string" },
+          "focusNode": { "type": "string", "format": "uri-reference" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "validationOutcome": {
+      "enum": ["CONFORMING", "NON_CONFORMING", "INSUFFICIENT_DATA", "NOT_EVALUATED", "EXECUTION_ERROR"]
+    }
+  }
+}

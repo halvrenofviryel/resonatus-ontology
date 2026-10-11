@@ -1,0 +1,214 @@
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Optional bounded linear profile. All role-distinctness checks are local to one selected path; no
+# global class-disjointness axioms are introduced here.
+strict:StrictLinearPathShape a sh:NodeShape ;
+  sh:targetClass res:ContinuationPath ;
+  sh:targetObjectsOf res:hasTracePath ;
+  sh:property [ sh:path res:hasDeclaredOriginInteraction ; sh:minCount 1 ;
+    sh:message "MISSING_LINEAGE_ROLE: a declared origin is required." ] ;
+  sh:property [ sh:path res:hasDeclaredOriginInteraction ; sh:maxCount 1 ;
+    sh:message "VIOLATION_LINEAGE_CARDINALITY: at most one declared origin is allowed." ] ;
+  sh:property [ sh:path res:hasTraceContinuation ; sh:minCount 1 ;
+    sh:message "MISSING_LINEAGE_ROLE: a Trace witness is required." ] ;
+  sh:property [ sh:path res:hasTraceContinuation ; sh:maxCount 1 ;
+    sh:message "VIOLATION_LINEAGE_CARDINALITY: at most one Trace witness is allowed." ] ;
+  sh:property [ sh:path res:hasPostInteractionContinuation ; sh:minCount 1 ;
+    sh:message "MISSING_LINEAGE_ROLE: a Delay witness is required." ] ;
+  sh:property [ sh:path res:hasPostInteractionContinuation ; sh:maxCount 1 ;
+    sh:message "VIOLATION_LINEAGE_CARDINALITY: at most one Delay witness is allowed." ] ;
+  sh:property [ sh:path res:hasPropagationEvent ; sh:minCount 1 ;
+    sh:message "MISSING_LINEAGE_ROLE: a Propagation witness is required." ] ;
+  sh:property [ sh:path res:hasPropagationEvent ; sh:maxCount 1 ;
+    sh:message "VIOLATION_LINEAGE_CARDINALITY: at most one Propagation witness is allowed." ] ;
+  sh:property [ sh:path res:hasContextModulation ; sh:minCount 1 ;
+    sh:message "MISSING_LINEAGE_ROLE: a Selectivity witness is required." ] ;
+  sh:property [ sh:path res:hasContextModulation ; sh:maxCount 1 ;
+    sh:message "VIOLATION_LINEAGE_CARDINALITY: at most one Selectivity witness is allowed." ] ;
+  sh:sparql [
+    sh:message "MISSING_LINEAGE_OUTCOME: a Transformation or Feedback witness is required." ;
+    sh:select """
+      SELECT $this WHERE {
+        FILTER NOT EXISTS {
+          { $this <https://w3id.org/resonatus#hasTransformationEvent> ?outcome }
+          UNION
+          { $this <https://w3id.org/resonatus#hasFeedbackEvent> ?outcome }
+        }
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "MISSING_LINEAGE_MEMBERSHIP: every causal-spine witness must be registered as a segment of this path." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasTraceContinuation> ?trace ;
+              <https://w3id.org/resonatus#hasPostInteractionContinuation> ?delay ;
+              <https://w3id.org/resonatus#hasPropagationEvent> ?propagation ;
+              <https://w3id.org/resonatus#hasContextModulation> ?selectivity .
+        { $this <https://w3id.org/resonatus#hasTransformationEvent> ?outcome }
+        UNION
+        { $this <https://w3id.org/resonatus#hasFeedbackEvent> ?outcome }
+        FILTER (
+          NOT EXISTS { $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?trace } ||
+          NOT EXISTS { $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?propagation } ||
+          NOT EXISTS { $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?selectivity } ||
+          NOT EXISTS { $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?outcome }
+        )
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "MISSING_LINEAGE_DIRECTION: origin, Trace, Propagation, Selectivity, and outcome must expose the required forward causal links." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?origin ;
+              <https://w3id.org/resonatus#hasTraceContinuation> ?trace ;
+              <https://w3id.org/resonatus#hasPropagationEvent> ?propagation ;
+              <https://w3id.org/resonatus#hasContextModulation> ?selectivity .
+        { $this <https://w3id.org/resonatus#hasTransformationEvent> ?outcome }
+        UNION
+        { $this <https://w3id.org/resonatus#hasFeedbackEvent> ?outcome }
+        FILTER (
+          NOT EXISTS { ?origin <https://w3id.org/resonatus/strict#hasCausalNextStage> ?trace } ||
+          NOT EXISTS { ?trace <https://w3id.org/resonatus/strict#hasCausalNextStage> ?propagation } ||
+          NOT EXISTS { ?propagation <https://w3id.org/resonatus/strict#hasCausalNextStage> ?selectivity } ||
+          NOT EXISTS { ?selectivity <https://w3id.org/resonatus/strict#hasCausalNextStage> ?outcome }
+        )
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_LINEAGE_DIRECTION_REVERSED: a required causal step is asserted in the reverse direction." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?origin ;
+              <https://w3id.org/resonatus#hasTraceContinuation> ?trace ;
+              <https://w3id.org/resonatus#hasPropagationEvent> ?propagation ;
+              <https://w3id.org/resonatus#hasContextModulation> ?selectivity .
+        { $this <https://w3id.org/resonatus#hasTransformationEvent> ?outcome }
+        UNION
+        { $this <https://w3id.org/resonatus#hasFeedbackEvent> ?outcome }
+        FILTER (
+          EXISTS { ?trace <https://w3id.org/resonatus/strict#hasCausalNextStage> ?origin } ||
+          EXISTS { ?propagation <https://w3id.org/resonatus/strict#hasCausalNextStage> ?trace } ||
+          EXISTS { ?selectivity <https://w3id.org/resonatus/strict#hasCausalNextStage> ?propagation } ||
+          EXISTS { ?outcome <https://w3id.org/resonatus/strict#hasCausalNextStage> ?selectivity }
+        )
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "MISSING_LINEAGE_REFERENCE: Trace, Delay, Propagation, and Selectivity must expose the path's origin and receiver references." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?origin ;
+              <https://w3id.org/resonatus#hasTraceContinuation> ?trace ;
+              <https://w3id.org/resonatus#hasPostInteractionContinuation> ?delay ;
+              <https://w3id.org/resonatus#hasPropagationEvent> ?propagation ;
+              <https://w3id.org/resonatus#hasContextModulation> ?selectivity .
+        FILTER (
+          NOT EXISTS { ?trace <https://w3id.org/resonatus#causallyAttributedTo> ?origin } ||
+          NOT EXISTS { ?delay <https://w3id.org/resonatus#postInteractionOf> ?origin } ||
+          NOT EXISTS {
+            ?propagation <https://w3id.org/resonatus#hasPropagationReceiver> ?receiver .
+            ?selectivity <https://w3id.org/resonatus#uptakeDependsOn> ?receiver .
+          }
+        )
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_LINEAGE_REFERENCE_MISMATCH: an explicit origin or receiver reference conflicts with the path reference." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?origin ;
+              <https://w3id.org/resonatus#hasTraceContinuation> ?trace ;
+              <https://w3id.org/resonatus#hasPostInteractionContinuation> ?delay ;
+              <https://w3id.org/resonatus#hasPropagationEvent> ?propagation ;
+              <https://w3id.org/resonatus#hasContextModulation> ?selectivity .
+        FILTER (
+          EXISTS {
+            ?trace <https://w3id.org/resonatus#causallyAttributedTo> ?otherOrigin .
+            FILTER (?otherOrigin != ?origin)
+          } ||
+          EXISTS {
+            ?delay <https://w3id.org/resonatus#postInteractionOf> ?otherDelayOrigin .
+            FILTER (?otherDelayOrigin != ?origin)
+          } ||
+          EXISTS {
+            ?propagation <https://w3id.org/resonatus#hasPropagationReceiver> ?propagationReceiver .
+            ?selectivity <https://w3id.org/resonatus#uptakeDependsOn> ?selectivityReceiver .
+            FILTER (?propagationReceiver != ?selectivityReceiver)
+          }
+        )
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_LINEAGE_DISTINCTNESS: candidate, path, origin, receiver, and witness roles must be distinct within the selected strict path." ;
+    sh:select """
+      SELECT $this WHERE {
+        ?candidate <https://w3id.org/resonatus#hasTracePath> $this .
+        $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?origin ;
+              <https://w3id.org/resonatus#hasTraceContinuation> ?trace ;
+              <https://w3id.org/resonatus#hasPostInteractionContinuation> ?delay ;
+              <https://w3id.org/resonatus#hasPropagationEvent> ?propagation ;
+              <https://w3id.org/resonatus#hasContextModulation> ?selectivity .
+        ?propagation <https://w3id.org/resonatus#hasPropagationReceiver> ?receiver .
+        { $this <https://w3id.org/resonatus#hasTransformationEvent> ?outcome }
+        UNION
+        { $this <https://w3id.org/resonatus#hasFeedbackEvent> ?outcome }
+        FILTER (
+          ?candidate IN ($this, ?origin, ?trace, ?delay, ?propagation, ?selectivity, ?receiver, ?outcome) ||
+          $this IN (?origin, ?trace, ?delay, ?propagation, ?selectivity, ?receiver, ?outcome) ||
+          ?origin IN (?trace, ?delay, ?propagation, ?selectivity, ?receiver, ?outcome) ||
+          ?trace IN (?delay, ?propagation, ?selectivity, ?receiver, ?outcome) ||
+          ?delay IN (?propagation, ?selectivity, ?receiver, ?outcome) ||
+          ?propagation IN (?selectivity, ?receiver, ?outcome) ||
+          ?selectivity IN (?receiver, ?outcome) ||
+          ?receiver = ?outcome
+        )
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_LINEAGE_CYCLE: a causal segment must not be upstream of itself." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?segment .
+        ?segment <https://w3id.org/resonatus/strict#hasCausalNextStage>+ ?segment .
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "OUT_OF_SCOPE_BRANCH_MERGE: this initial strict profile evaluates only a single linear lineage." ;
+    sh:select """
+      SELECT $this WHERE {
+        {
+          SELECT $this ?node (COUNT(DISTINCT ?next) AS ?count) WHERE {
+            { $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?node }
+            UNION
+            { $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?node }
+            $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?next .
+            ?node <https://w3id.org/resonatus/strict#hasCausalNextStage> ?next .
+          }
+          GROUP BY $this ?node
+          HAVING (COUNT(DISTINCT ?next) > 1)
+        }
+        UNION
+        {
+          SELECT $this ?node (COUNT(DISTINCT ?previous) AS ?count) WHERE {
+            $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?node .
+            { $this <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?previous }
+            UNION
+            { $this <https://w3id.org/resonatus/strict#hasCausalSegment> ?previous }
+            ?previous <https://w3id.org/resonatus/strict#hasCausalNextStage> ?node .
+          }
+          GROUP BY $this ?node
+          HAVING (COUNT(DISTINCT ?previous) > 1)
+        }
+      }
+    """
+  ] .

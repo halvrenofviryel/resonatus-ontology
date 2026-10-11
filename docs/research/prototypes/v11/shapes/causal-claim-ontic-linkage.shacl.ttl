@@ -1,0 +1,46 @@
+@prefix exp: <https://w3id.org/resonatus/experimental/v1.1#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# An independent check of whether a claim's relata match an explicit ontic causal assertion. Absence
+# of such an assertion is missing linkage, not a malformed claim record. An explicitly different
+# ontic target is a conflict. Neither outcome assesses the scientific truth of the claim.
+
+exp:CausalClaimOnticLinkageShape a sh:NodeShape ;
+  sh:targetClass exp:CausalAttributionClaim ;
+  sh:targetSubjectsOf exp:causalSubject ;
+  sh:sparql [
+    sh:message "MISSING_ONTIC_LINKAGE: the claim has no matching explicit ontic causal attribution." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus/experimental/v1.1#causalSubject> ?subject ;
+              <https://w3id.org/resonatus/experimental/v1.1#causalObject> ?object .
+        FILTER NOT EXISTS {
+          ?subject <https://w3id.org/resonatus#causallyAttributedTo> ?object .
+        }
+      }
+    """
+  ] ;
+  sh:sparql [
+    sh:message "VIOLATION_ONTIC_LINKAGE_CONFLICT: the claim conflicts with an explicitly asserted causal target or the subject path's declared origin." ;
+    sh:select """
+      SELECT $this WHERE {
+        $this <https://w3id.org/resonatus/experimental/v1.1#causalSubject> ?subject ;
+              <https://w3id.org/resonatus/experimental/v1.1#causalObject> ?object .
+        FILTER NOT EXISTS {
+          ?subject <https://w3id.org/resonatus#causallyAttributedTo> ?object .
+        }
+        FILTER (
+          EXISTS {
+            ?subject <https://w3id.org/resonatus#causallyAttributedTo> ?otherObject .
+            FILTER (?otherObject != ?object)
+          } ||
+          EXISTS {
+            ?path <https://w3id.org/resonatus#hasTraceContinuation> ?subject ;
+                  <https://w3id.org/resonatus#hasDeclaredOriginInteraction> ?otherOrigin .
+            FILTER (?otherOrigin != ?object)
+          }
+        )
+      }
+    """
+  ] .

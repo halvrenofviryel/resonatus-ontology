@@ -1,0 +1,62 @@
+@prefix strict: <https://w3id.org/resonatus/strict#> .
+@prefix res: <https://w3id.org/resonatus#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+<https://w3id.org/resonatus/strict> a owl:Ontology ;
+  owl:versionIRI <https://w3id.org/resonatus/strict/1.1.0-rc.1> ;
+  owl:versionInfo "1.1.0-rc.1" ;
+  rdfs:label "Resonatus optional strict-profile vocabulary RC 1"@en ;
+  rdfs:comment "Provisional local release candidate. The strict namespace and version IRIs are not approved for public publication; the ontology IRI returned HTTP 404 when checked on 2026-10-11. This module is optional, is not imported by the Resonatus core, and does not change v1.0.0 class membership semantics."@en .
+
+strict:AssessmentScope a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  owl:disjointWith res:ContinuationPath ;
+  rdfs:label "assessment scope"@en ;
+  rdfs:comment "An information artefact identifying the ontic ContinuationPath evaluated by an assessment; it is not that process."@en .
+
+strict:CausalAttributionClaim a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  rdfs:label "causal attribution claim"@en ;
+  rdfs:comment "An epistemic information artefact expressing a causal claim. It is distinct from the ontic res:causallyAttributedTo assertion."@en .
+
+strict:hasCausalSegment a owl:ObjectProperty ;
+  rdfs:domain res:ContinuationPath ;
+  rdfs:label "has causal segment"@en ;
+  rdfs:comment "Registers a Trace, Propagation, Selectivity, or outcome witness as a segment role on the selected strict causal spine. This is profile membership, not BFO occurrent parthood."@en .
+
+strict:hasCausalNextStage a owl:ObjectProperty, owl:IrreflexiveProperty, owl:AsymmetricProperty ;
+  rdfs:label "has causal next stage"@en ;
+  rdfs:comment "A directed causal-next-stage edge selected at the profile's declared granularity. It is not declared transitive and imposes no requirement that the linked processes be temporally disjoint. OWL supplies no general non-transitivity axiom; absence of a transitive declaration must not be read as proof that all chains lack shortcuts. No RO or BFO equivalence is asserted."@en .
+
+strict:temporallyQualifiesPath a owl:ObjectProperty ;
+  rdfs:domain res:PostInteractionContinuation ;
+  rdfs:range res:ContinuationPath ;
+  rdfs:label "temporally qualifies path"@en ;
+  rdfs:comment "Identifies the ContinuationPath whose Delay condition is measured by this witness. It does not make Delay a causal-spine segment or assert a causal edge."@en .
+
+strict:hasAssessmentScope a owl:ObjectProperty ;
+  rdfs:domain res:ResonatusAssessment ;
+  rdfs:range strict:AssessmentScope ;
+  rdfs:label "has assessment scope"@en .
+
+strict:scopesProcess a owl:ObjectProperty ;
+  rdfs:domain strict:AssessmentScope ;
+  rdfs:range res:ContinuationPath ;
+  rdfs:label "scopes process"@en .
+
+strict:causalSubject a owl:ObjectProperty ;
+  rdfs:domain strict:CausalAttributionClaim ;
+  rdfs:label "causal subject"@en ;
+  rdfs:comment "Identifies the subject of a claim without imposing an ontic range type."@en .
+
+strict:causalObject a owl:ObjectProperty ;
+  rdfs:domain strict:CausalAttributionClaim ;
+  rdfs:label "causal object"@en ;
+  rdfs:comment "Identifies the object of a claim without imposing an ontic range type."@en .
+
+strict:usesCausalAssessmentMethod a owl:ObjectProperty ;
+  rdfs:domain strict:CausalAttributionClaim ;
+  rdfs:range res:AssessmentMethod ;
+  rdfs:label "uses causal assessment method"@en .
