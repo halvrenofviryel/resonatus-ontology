@@ -1,4 +1,4 @@
-# Licensing — Resonatus Ontology v1.0.0
+# Licensing — Resonatus Ontology
 
 This repository uses a **split licence** by file type. Both licence texts are included in full.
 
@@ -14,6 +14,8 @@ Licensed under the **Creative Commons Attribution 4.0 International License** (`
 - `examples/` — the worked example graphs / fixtures
 - `tests/` — the OWL/SHACL adversarial fixtures and the reasoner‑gate specification
 - `competency-queries/`, `competency-questions.md`
+- `profiles/` ontology, shapes, fixtures, schemas, Markdown documents, and checksum manifests (the
+  Python files under `profiles/*/runners/` are covered by Apache-2.0 below)
 - all Markdown documentation (`README.md`, `CHANGELOG.md`, `DESIGN_RATIONALE.md`,
   `FORMAL_VERIFICATION_REPORT.md`, `THIRD_PARTY_NOTICES.md`) and `docs/`
 - repository metadata files: `CITATION.cff`, `SHA256SUMS.txt`, `.gitignore`
@@ -26,6 +28,8 @@ Licensed under the **Apache License, Version 2.0** (`LICENSE-APACHE-2.0.txt`,
 <https://www.apache.org/licenses/LICENSE-2.0>). This covers:
 
 - `scripts/` — all Python runner and validation scripts
+- `profiles/*/runners/` — strict-profile package verification and regression runners
+- Python runners under `docs/research/prototypes/`
 - `requirements.txt` — the pinned dependency list for those scripts
 
 Every tracked file is covered by exactly one of the two licences above, except the third-party

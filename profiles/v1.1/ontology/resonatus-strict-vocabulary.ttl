@@ -8,7 +8,7 @@
   owl:versionIRI <https://w3id.org/resonatus/strict/1.1.0> ;
   owl:versionInfo "1.1.0" ;
   rdfs:label "Resonatus optional strict-profile vocabulary 1.1.0"@en ;
-  rdfs:comment "Owner-approved local final artefact. Public w3id resolution is not active and publication requires a separate action. This module is optional, is not imported by the Resonatus core, and does not change v1.0.0 class membership semantics."@en .
+  rdfs:comment "Owner-approved v1.1.0 release artefact. This module is optional, is not imported by the Resonatus core, and does not change v1.0.0 class membership semantics. Strict-profile conformance is not scientific validation."@en .
 
 strict:AssessmentScope a owl:Class ;
   rdfs:subClassOf prov:Entity ;

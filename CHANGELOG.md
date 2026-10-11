@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## 1.1.0 — 2026-10-11
+
+- Added the owner-approved, opt-in Strict Linear and Strict Assessment package under
+  `profiles/v1.1/`, without importing it into or changing the semantics of the frozen v1.0.0 core.
+- Added directed causal-spine, Delay/path binding, assessment-scope, claim-record, ontic-linkage, and
+  evidence-record SHACL dimensions plus a machine-readable multidimensional result schema.
+- Preserved ontic causal assertions separately from epistemic claim records; strict conformance does
+  not assert scientific adequacy, causal truth, or validation of a natural kind.
+- Verified the v1.1 package with 15/15 scenarios, 27/27 mutation gates, 26/26 OWL module-integration
+  checks, 27/27 package-integrity gates, and an 8/8 temporal matrix on pySHACL 0.40.1/RDFLib 7.6.0
+  and Apache Jena SHACL 6.2.0.
+- Retained all post-v1.0.0 validation and documentation hardening:
+
 - Isolated the negative assessment SHACL fixtures so missing `assessesPath` no longer lets unrelated
   tests pass for the wrong reason. The SHACL runner now asserts expected report components, paths, and
   identifying SPARQL messages, not only `conforms = false`.

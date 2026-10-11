@@ -1,8 +1,8 @@
-# Resonatus Ontology v1.0.0
+# Resonatus Ontology v1.1.0
 
-> The archival `v1.0.0` tag is frozen. Current `main` contains the validation and documentation
-> hardening listed under **Unreleased** in [`CHANGELOG.md`](CHANGELOG.md); it does not rewrite the
-> archived release.
+> The `v1.0.0` core ontology and default SHACL profile remain frozen. Release `v1.1.0` adds
+> owner-approved, opt-in Strict Linear and Strict Assessment profiles under [`profiles/v1.1/`](profiles/v1.1/)
+> without importing them into or changing the semantics of the core.
 
 An OWL 2 DL ontology for **persistent causal trace processes**, with a SHACL validation profile,
 competency questions, worked examples, adversarial fixtures, and reproducible formal-verification
@@ -13,9 +13,11 @@ Processes* (Ali Toygar Abak, Phionyx Research).
 |---|---|
 | Ontology IRI | `https://w3id.org/resonatus` |
 | Vocabulary namespace | `https://w3id.org/resonatus#` (prefix `res:`) |
-| Version IRI | `https://w3id.org/resonatus/1.0.0` |
-| Release version | `1.0.0` |
-| Archival DOI | [`10.5281/zenodo.21939903`](https://doi.org/10.5281/zenodo.21939903) |
+| Frozen core version IRI | `https://w3id.org/resonatus/1.0.0` |
+| Optional strict namespace | `https://w3id.org/resonatus/strict#` (prefix `strict:`) |
+| Strict-profile version IRI | `https://w3id.org/resonatus/strict/1.1.0` |
+| Release version | `1.1.0` |
+| Zenodo concept DOI (all versions) | [`10.5281/zenodo.21939902`](https://doi.org/10.5281/zenodo.21939902) |
 | Repository | <https://github.com/halvrenofviryel/resonatus-ontology> |
 
 ## What Resonatus is
@@ -35,6 +37,9 @@ natural law.
    `MEMBERSHIP_SUPPORTED` / `NON_MEMBERSHIP_SUPPORTED` / `UNDETERMINED`.
 4. **Optional BFO 2020 bridge** — `alignments/` (with a vendored, pinned BFO 2020 for offline reasoning).
 5. **Evaluation materials** — competency questions/queries, worked examples, and adversarial fixtures.
+6. **Optional v1.1 strict profiles** — an additive vocabulary, independently selectable SHACL
+   dimensions, a multidimensional result schema, fixtures, and reproducible runners under
+   `profiles/v1.1/`. Strict-profile conformance is not scientific validation.
 
 ## Constitutive definition (reified path)
 
@@ -114,6 +119,7 @@ competency-questions.md   all 22 natural-language competency questions
 examples/          worked example graphs
 scripts/           HermiT/pySHACL runners, reference classifier, wording lint
 docs/              review record and architecture figure
+profiles/v1.1/     optional Strict Linear and Strict Assessment v1.1.0 package
 FORMAL_VERIFICATION_REPORT.md   separate‑toolchain formal verification report
 DESIGN_RATIONALE.md             design rationale
 ```
@@ -122,8 +128,9 @@ DESIGN_RATIONALE.md             design rationale
 
 Please cite the archived artefact (see `CITATION.cff`):
 
-> Abak, A. T. (2026). *Resonatus Ontology: OWL 2 DL Model, SHACL Validation Profile, and Verification
-> Artefacts* (Version 1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21939903
+> Abak, A. T. (2026). *Resonatus Ontology: OWL 2 DL Model, SHACL Validation Profile, Optional Strict
+> Profiles, and Verification Artefacts* (Version 1.1.0) [Software]. Zenodo.
+> https://doi.org/10.5281/zenodo.21939902
 
 ## Methodological limits & Future Work
 
@@ -134,8 +141,8 @@ Please cite the archived artefact (see `CITATION.cff`):
   currently exists passed; it is not a claim of full competency-question coverage. See
   [`competency-questions.md`](competency-questions.md).
 - **Future Work:** a paired‑state real‑system intervention and independent external reuse are not
-  established here; broader executable coverage, temporal-validation policy, causal-path semantics,
-  and independent evaluation of the five constitutive criteria remain open.
+  established here; broader executable coverage, branch/merge identity, and independent evaluation
+  of the five constitutive criteria remain open.
 
 ## Licence
 

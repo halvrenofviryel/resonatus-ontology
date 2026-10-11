@@ -1,6 +1,6 @@
 # Resonatus strict-profile IRI publication plan
 
-**Status:** permanent identifier contract owner-approved; application not authorized
+**Status:** permanent identifier contract and w3id pull-request submission owner-authorized
 
 ## Existing state verified on 2026-10-11
 
@@ -80,9 +80,9 @@ resolve the v1.0.0 core. They do not replace or edit either current v1.0.0 rule.
 2. Promote the approved RC to final `1.1.0` artefacts and identifiers in a dedicated commit — **complete**.
 3. Rerun package, portability, and repository regression gates; regenerate checksums — **complete**.
 4. Push the immutable target and verify every raw HTTPS target — **complete**.
-5. After separate authorization, prepare a minimal `perma-id/w3id.org` pull request touching only
-   `ids/resonatus/.htaccess`.
+5. Prepare a minimal `perma-id/w3id.org` pull request touching only `ids/resonatus/.htaccess` —
+   **authorized; submission pending**.
 6. Run the w3id repository checks and manually test every redirect after merge.
 
-No w3id fork, branch, commit, or pull request has been created. Steps 5–6 remain blocked on separate
-authorization.
+The w3id pull request is authorized but has not yet been submitted. Redirect deployment and the live
+checks in step 6 depend on external review and merge.

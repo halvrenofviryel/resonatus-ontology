@@ -60,8 +60,8 @@ The complete file list is the set of paths in `CHECKSUMS.sha256` plus `CHECKSUMS
 
 ## Release boundary
 
-Owner approval authorizes preparation, preservation commit, and preservation-branch push of these
-local final artefacts. It authorizes no merge, tag, GitHub Release, DOI/Zenodo deposit, w3id
-configuration, default-profile replacement, or manuscript revision. Public publication remains
-blocked until immutable HTTPS targets are verified, IRI resolution is operational, and a separate
-publication action is authorized.
+The owner subsequently authorized merge, the `v1.1.0` tag, a GitHub Release, a Zenodo version record,
+and submission of the prepared w3id configuration as a pull request. The immutable HTTPS targets are
+verified. Acceptance and deployment of the external w3id pull request remain outside this repository's
+control. The authorization does not cover default-profile replacement, core-semantic changes,
+manuscript revision, or claims of scientific validation.

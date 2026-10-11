@@ -2,17 +2,17 @@
 
 **Version:** `1.1.0`
 
-**Status:** owner-approved local final artefacts; not publicly published
+**Status:** owner-approved v1.1.0 release artefacts; public IRI resolution pending
 
-**Engineering disposition:** `GO` for preservation; `NO-GO` for public publication
+**Engineering disposition:** `GO` for public release and w3id pull-request submission
 
 This directory is the self-contained, owner-approved local final package for the optional Resonatus
 Strict Linear and Strict Assessment profiles. It promotes the bounded v1.1 prototype and RC results
 without changing the published v1.0.0 core ontology or its default SHACL profile.
 
 The namespace `https://w3id.org/resonatus/strict#`, final version IRI, and profile identifiers are
-owner-approved. Public w3id resolution is not active. Local preservation does not authorize a merge,
-tag, GitHub Release, DOI deposit, w3id change, or public claim of scientific validation.
+owner-approved. Public w3id resolution remains dependent on acceptance of the separately submitted
+redirect change. Publication does not authorize a claim of scientific validation.
 
 ## Package contents
 
@@ -27,7 +27,7 @@ tag, GitHub Release, DOI deposit, w3id change, or public claim of scientific val
 - `RELEASE_MANIFEST.md`: provenance, inventory, and release boundaries.
 - `VERIFICATION_REPORT.md`: executed evidence and known unverified items.
 - `TEMPORAL_PORTABILITY_REPORT.md`: independent pySHACL/Jena temporal comparison.
-- `IRI_PUBLICATION_PLAN.md`: prepared permanent-identifier and redirect plan; not applied.
+- `IRI_PUBLICATION_PLAN.md`: permanent-identifier and authorized redirect-submission plan.
 - `OWNER_NORMATIVE_APPROVAL.md`: completed design sign-off and publication boundary.
 - `CHECKSUMS.sha256`: SHA-256 checksums for every package artefact except the checksum file itself.
 

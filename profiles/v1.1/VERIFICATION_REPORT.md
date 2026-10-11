@@ -8,8 +8,8 @@
 
 ## Disposition
 
-`GO` for preservation of the owner-approved local final `1.1.0` artefacts. `NO-GO` for public
-publication actions until the remaining publication gates are closed and separately authorized.
+`GO` for the owner-authorized `1.1.0` GitHub and Zenodo release actions and submission of the prepared
+w3id redirect pull request. Deployment of those redirects remains dependent on external PR acceptance.
 
 The final package replays all bounded prototype oracles successfully and keeps the published core
 separate. This is engineering verification, not domain validation or scientific confirmation.
@@ -69,14 +69,14 @@ require.
 | Domain evidence thresholds | `UNASSESSED` | No scientific adequacy or causal truth claim |
 | Independent multi-domain validation | `UNASSESSED` | No scientific validation claim |
 
-## Publication blockers
+## Publication dependencies
 
 - operational resolution and content-negotiation checks for the approved public IRIs;
-- an explicit release action separate from this local preparation task.
+- acceptance and deployment of the external w3id pull request.
 
-A preservation commit and branch push exist as recorded in the owner decision register. No merge,
-tag, release, DOI deposit, manuscript edit, w3id change, or change to the published core is part of
-this report.
+A preservation commit and branch push exist as recorded in the owner decision register. The owner
+subsequently authorized merge, tag, GitHub Release, Zenodo versioning, and w3id PR submission. No
+manuscript edit, default-profile replacement, or change to the published core is part of this report.
 
 The resolution observation was made with a read-only HTTP request to
 `https://w3id.org/resonatus/strict`. The offline package runner records this as a known blocker rather

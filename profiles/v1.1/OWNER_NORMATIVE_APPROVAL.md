@@ -50,3 +50,10 @@ is authorized.
 
 The approved RC was subsequently promoted into the local final package under `profiles/v1.1/`. The
 RC commit and branch above remain the provenance record for the reviewed candidate.
+
+## Subsequent publication authorization
+
+On 2026-10-11, after the final package and immutable targets passed their recorded gates, the owner
+separately authorized merge, the `v1.1.0` tag, a GitHub Release, a Zenodo version record, and a
+`perma-id/w3id.org` pull request. This later authorization supersedes only the publication restriction
+above; N01–N09 and the scientific-claim boundary remain unchanged.

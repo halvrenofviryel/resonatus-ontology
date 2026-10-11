@@ -1,15 +1,16 @@
 # Resonatus v1.1 Owner Decision Register
 
-**State:** OPTIONAL v1.1 STRICT-PROFILE CONTRACT APPROVED — local final artefacts prepared and
-preserved; public publication remains `NO-GO`.
+**State:** OPTIONAL v1.1 STRICT-PROFILE PUBLICATION AUTHORIZED — release and w3id submission in
+progress; scientific validation remains unassessed.
 
 ## How to use this register
 
 The owner recorded the v1.1 research direction on 2026-10-11 and subsequently approved N01–N09 after
 prototype and RC review. That approval closes D01–D03, D05, and D08 for the optional v1.1 strict
 module only. D04, D06, and D07 remain research questions; D09–D11 remain preservation constraints.
-The approval authorizes local final-artifact preparation and preservation-branch push, not merge, tag,
-GitHub Release, Zenodo publication, or a w3id.org pull request.
+The initial approval authorized local final-artifact preparation and preservation-branch push. On
+2026-10-11 the owner separately authorized merge, the `v1.1.0` tag, GitHub Release, Zenodo versioning,
+and a w3id.org pull request. This does not change the scientific-claim boundary.
 
 | ID | Decision | Options | Recommendation | Why | Consequences | Status |
 |---|---|---|---|---|---|---|
@@ -20,7 +21,7 @@ GitHub Release, Zenodo publication, or a w3id.org pull request.
 | D05 | Where should Delay be validated? | A: OWL core; B: optional OWL-Time/SHACL profile; C: external assessment only. | **B**, as a separate optional temporal validation profile. | The intended non-zero post-end condition is closed-world/data-sensitive and not present in the core. | Domains without interval data cannot claim temporal-profile conformance. | `APPROVED_FOR_OPTIONAL_V1.1_PROFILE` |
 | D06 | Are the five positions constitutive of an ontological class? | A: retain necessary-and-sufficient class; B: treat as graded assessment dimensions; C: provisional class plus explicit research status. | **No change at this stage.** | Formal separability is established; scientific necessity and discrimination are not. | Later evidence may support the current definition, simplify it, or favor a graded profile. | `HOLD_NO_CHANGE; SCIENTIFIC_EVIDENCE_REQUIRED` |
 | D07 | How should `Transformation ∨ Feedback` be handled? | A: keep disjunction; B: require Feedback; C: operationally define Transformation; D: split into profiles. | **No change at this stage.** | Transformation is currently unconstrained and may be nearly universal at fine granularity. | Define and test both branches before any strengthening. | `HOLD_NO_CHANGE; SCIENTIFIC_EVIDENCE_REQUIRED` |
-| D08 | What is the public positioning of Resonatus? | A: novel process kind; B: applied ontology profile; C: vocabulary plus assessment framework. | **B/C now**; reserve A for later evidence. | Current model has a potentially useful selection/profile but no demonstrated identity criterion or independent validation. | Public claims must distinguish formal profile utility from a scientifically established new process kind. | `APPROVED_POSITIONING; PUBLICATION_NOT_AUTHORIZED` |
+| D08 | What is the public positioning of Resonatus? | A: novel process kind; B: applied ontology profile; C: vocabulary plus assessment framework. | **B/C now**; reserve A for later evidence. | Current model has a potentially useful selection/profile but no demonstrated identity criterion or independent validation. | Public claims must distinguish formal profile utility from a scientifically established new process kind. | `APPROVED_POSITIONING; PUBLICATION_AUTHORIZED` |
 | D09 | Should ontic membership and epistemic support remain separate? | A: separate; B: merge. | **A** | CL1–CL2 show both disagreement directions are coherent and useful. | Preserve current runners and wording. | `PRESERVE` |
 | D10 | Should the BFO commitment remain optional? | A: optional bridge; B: import into core. | **A** | Optionality avoids forcing an upper-ontology choice on all users. | Continue bridge consistency tests; revisit only if the upper-ontology decision is explicitly reopened. | `PRESERVE` |
 | D11 | Should v1.0.0 release artefacts be rewritten? | A: freeze; B: rewrite. | **A** | Published tags, DOI artefacts, reports, and checksums are historical records. | Put all new work under Unreleased/v1.1 research until an approved release. | `PRESERVE` |
@@ -89,8 +90,9 @@ publication still requires a separate decision.
   `14/14` command-group regression.
 - The immutable vocabulary, activation, and schema targets were byte-verified over GitHub Raw and
   pinned in the IRI plan by commit `170661b4efadc99531dd36814211db5039e876b4`.
-- Public publication remains `NO-GO`: no merge, tag, GitHub Release, Zenodo deposit, or w3id PR was
-  created, and live strict IRI resolution remains unavailable until separately authorized work.
+- On 2026-10-11 the owner separately authorized merge, the `v1.1.0` tag, GitHub Release, a Zenodo
+  version record, and the prepared w3id PR. Live strict IRI resolution remains dependent on external
+  w3id review and deployment; scientific adequacy and causal truth remain unassessed.
 
 ## Evidence required at each gate
 

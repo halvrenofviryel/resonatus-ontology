@@ -211,11 +211,11 @@ def main() -> int:
     iri_plan = (PACKAGE / "IRI_PUBLICATION_PLAN.md").read_text(encoding="utf-8")
     report(
         checks,
-        "strict IRI plan preserves v1.0.0 and remains non-applied",
+        "strict IRI plan preserves v1.0.0 and records authorized submission",
         "https://w3id.org/resonatus/strict#" in iri_plan
         and "https://w3id.org/resonatus/strict/1.1.0" in iri_plan
         and "v1.0.0 rule" in iri_plan
-        and "No w3id fork, branch, commit, or pull request" in iri_plan,
+        and "w3id pull request is authorized" in iri_plan,
     )
 
     approval = (PACKAGE / "OWNER_NORMATIVE_APPROVAL.md").read_text(encoding="utf-8")
@@ -225,8 +225,9 @@ def main() -> int:
         "**Status:** `APPROVED`" in approval
         and all(f"N{number:02d}" in approval for number in range(1, 10))
         and approval.count("`APPROVED`") >= 10
-        and "w3id PR require separate approval" in approval
-        and "NO-GO" in approval,
+        and "## Subsequent publication authorization" in approval
+        and "GitHub Release" in approval
+        and "Zenodo version record" in approval,
     )
 
     checksum_path = PACKAGE / "CHECKSUMS.sha256"
@@ -249,7 +250,7 @@ def main() -> int:
         checksum_ok = checksum_ok and checksum_entries == package_files
     report(checks, "v1.1 artefact checksums", checksum_ok)
 
-    print("[KNOWN_BLOCKER] live w3id.org check is outside this offline runner; HTTP 404 observed 2026-10-11")
+    print("[KNOWN_DEPENDENCY] live w3id.org resolution awaits external PR review; HTTP 404 observed 2026-10-11")
     print("[PASS_RECORDED] cross-engine temporal matrix: 8/8 on pySHACL/RDFLib and Apache Jena SHACL")
     passed = sum(ok for _, ok in checks)
     print(f"\nSUMMARY: v1_1_package_checks={passed}/{len(checks)}; overall={'PASS' if all(ok for _, ok in checks) else 'FAIL'}")
