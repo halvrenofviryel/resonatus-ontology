@@ -41,13 +41,13 @@ is a separate owner choice; they must not silently become final IRIs.
 
 ## Verified immutable final targets
 
-Final v1.1.0 artefacts were preserved in commit
-`65918870c8cafcf64ef7d8dbace14571178829dd`. On 2026-10-11, the GitHub Raw responses were
+Final v1.1.0 public-release artefacts were preserved in commit
+`c2ad91888f3cf69c291a9c8d7750dfe4aff36a3e`. On 2026-10-11, the GitHub Raw responses were
 byte-for-byte equal to the local files:
 
 | Target | SHA-256 |
 |---|---|
-| `profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl` | `cb704ff5c6a2376033bbb0908c387a8db18fa0025da32c5d7c87a2671dff7f0c` |
+| `profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl` | `3e3ad3e090c99b759453935159ab58ec6b6e5cab052eb872d99708d79b5e844c` |
 | `profiles/v1.1/profile-activation.ttl` | `1b3b2578337bf109b69933edf9608b5057aa11599da7e92b3d70d3c6f06cbf57` |
 | `profiles/v1.1/schemas/validation-result.schema.json` | `584a3cbcf99911393c47a4db4d8892b2d8c5527f5ba17d54fe842e543ca99a93` |
 
@@ -58,17 +58,17 @@ commit above:
 
 ```apache
 # Strict-profile versioned vocabulary -> immutable approved release content
-RewriteRule ^strict/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl [R=302,L]
+RewriteRule ^strict/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/c2ad91888f3cf69c291a9c8d7750dfe4aff36a3e/profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl [R=302,L]
 
 # Versioned profile activation identifiers -> immutable approved release content
-RewriteRule ^strict/profile/strict-linear/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/profile-activation.ttl [R=302,L]
-RewriteRule ^strict/profile/strict-assessment/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/profile-activation.ttl [R=302,L]
+RewriteRule ^strict/profile/strict-linear/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/c2ad91888f3cf69c291a9c8d7750dfe4aff36a3e/profiles/v1.1/profile-activation.ttl [R=302,L]
+RewriteRule ^strict/profile/strict-assessment/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/c2ad91888f3cf69c291a9c8d7750dfe4aff36a3e/profiles/v1.1/profile-activation.ttl [R=302,L]
 
 # Versioned machine-readable result schema
-RewriteRule ^strict/schema/validation-result/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/schemas/validation-result.schema.json [R=302,L]
+RewriteRule ^strict/schema/validation-result/1\.1\.0/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/c2ad91888f3cf69c291a9c8d7750dfe4aff36a3e/profiles/v1.1/schemas/validation-result.schema.json [R=302,L]
 
 # Canonical strict ontology IRI -> currently approved strict vocabulary
-RewriteRule ^strict/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/65918870c8cafcf64ef7d8dbace14571178829dd/profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl [R=302,L]
+RewriteRule ^strict/?$ https://raw.githubusercontent.com/halvrenofviryel/resonatus-ontology/c2ad91888f3cf69c291a9c8d7750dfe4aff36a3e/profiles/v1.1/ontology/resonatus-strict-vocabulary.ttl [R=302,L]
 ```
 
 These rules are intended to be inserted before the existing root rule because `^$` must continue to
