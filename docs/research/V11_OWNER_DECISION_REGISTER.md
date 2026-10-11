@@ -67,6 +67,20 @@ inspection, with the following bounded choices:
 This direction authorizes RC engineering only. The candidate identifiers remain provisional and the
 package must retain `NO-GO` publication status until a separate release decision.
 
+## Post-RC blocker status recorded on 2026-10-11
+
+- The RC and its supporting working tree were preserved in commit
+  `3e2821a6f9643234e20ac129caf509b909b924e0` on branch
+  `codex/resonatus-v1.1.0-rc.1`.
+- Temporal portability now passes an eight-case comparison between pySHACL 0.40.1/RDFLib 7.6.0 and
+  Apache Jena SHACL 6.2.0. This closes the bounded two-engine portability blocker, not every possible
+  engine/version combination.
+- A strict-IRI publication plan has been prepared without changing w3id.org. The existing v1.0.0
+  redirects remain untouched.
+- Normative owner sign-off remains pending in
+  `profiles/v1.1-rc/OWNER_NORMATIVE_APPROVAL.md`; publication remains `NO-GO` until that record is
+  explicitly approved and final immutable redirect targets exist.
+
 ## Evidence required at each gate
 
 ### Gate A — conceptual adequacy

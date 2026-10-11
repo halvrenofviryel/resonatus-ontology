@@ -55,6 +55,9 @@ def main() -> int:
         "CONFORMANCE_CONTRACT.md",
         "MIGRATION_GUIDE.md",
         "VERIFICATION_REPORT.md",
+        "TEMPORAL_PORTABILITY_REPORT.md",
+        "IRI_PUBLICATION_PLAN.md",
+        "OWNER_NORMATIVE_APPROVAL.md",
         "ontology/resonatus-strict-vocabulary.ttl",
         "profile-activation.ttl",
         "shapes/strict-linear.shacl.ttl",
@@ -65,6 +68,7 @@ def main() -> int:
         "shapes/evidence-record.shacl.ttl",
         "schemas/validation-result.schema.json",
         "schemas/example-validation-result.json",
+        "runners/run_temporal_portability.py",
         "CHECKSUMS.sha256",
     )
     report(checks, "required candidate artefacts present", all((RC / item).is_file() for item in required))
@@ -191,6 +195,38 @@ def main() -> int:
     )
     report(checks, "machine-readable result schema and sample", sample_ok)
 
+    portability_text = (RC / "TEMPORAL_PORTABILITY_REPORT.md").read_text(encoding="utf-8")
+    portability_runner = (RC / "runners/run_temporal_portability.py").read_text(encoding="utf-8")
+    report(
+        checks,
+        "bounded two-engine temporal portability evidence",
+        "8/8 PASS" in portability_text
+        and "pySHACL 0.40.1 / RDFLib 7.6.0" in portability_text
+        and "Apache Jena SHACL" in portability_text
+        and "6.2.0" in portability_text
+        and "JENA_SHACL" in portability_runner
+        and "return 2" in portability_runner,
+    )
+
+    iri_plan = (RC / "IRI_PUBLICATION_PLAN.md").read_text(encoding="utf-8")
+    report(
+        checks,
+        "strict IRI plan preserves v1.0.0 and remains non-applied",
+        "https://w3id.org/resonatus/strict#" in iri_plan
+        and "https://w3id.org/resonatus/strict/1.1.0" in iri_plan
+        and "v1.0.0 rule" in iri_plan
+        and "No w3id fork, branch, commit, or pull request" in iri_plan,
+    )
+
+    approval = (RC / "OWNER_NORMATIVE_APPROVAL.md").read_text(encoding="utf-8")
+    report(
+        checks,
+        "normative owner gate remains explicit",
+        "PENDING_OWNER_SIGN_OFF" in approval
+        and all(f"N{number:02d}" in approval for number in range(1, 10))
+        and "NO-GO" in approval,
+    )
+
     checksum_path = RC / "CHECKSUMS.sha256"
     checksum_ok = checksum_path.is_file()
     checksum_entries: set[str] = set()
@@ -212,7 +248,7 @@ def main() -> int:
     report(checks, "candidate artefact checksums", checksum_ok)
 
     print("[KNOWN_BLOCKER] live w3id.org check is outside this offline runner; HTTP 404 observed 2026-10-11")
-    print("[NOT_RUN] cross-engine SHACL temporal portability (only pinned pySHACL/RDFLib available)")
+    print("[PASS_RECORDED] cross-engine temporal matrix: 8/8 on pySHACL/RDFLib and Apache Jena SHACL")
     passed = sum(ok for _, ok in checks)
     print(f"\nSUMMARY: rc_package_checks={passed}/{len(checks)}; overall={'PASS' if all(ok for _, ok in checks) else 'FAIL'}")
     return 0 if all(ok for _, ok in checks) else 1

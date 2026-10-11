@@ -37,9 +37,10 @@ committed. The package was prepared in a dirty working tree and its exact file b
 
 - Ten representative candidate fixtures under `fixtures/`.
 - `schemas/example-validation-result.json`.
-- Shared adapter plus package, scenario, mutation, module-integration, and full regression runners under
-  `runners/`.
-- The five package documents and the checksum inventory.
+- Shared adapter plus package, scenario, mutation, module-integration, temporal-portability, and full
+  regression runners under `runners/`.
+- The five required package documents, temporal portability report, IRI plan, owner approval record,
+  and checksum inventory.
 
 The complete file list is the set of paths in `CHECKSUMS.sha256` plus `CHECKSUMS.sha256` itself.
 
